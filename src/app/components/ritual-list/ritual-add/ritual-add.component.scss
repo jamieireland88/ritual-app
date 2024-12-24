@@ -1,0 +1,30 @@
+:host {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.ritual-add-drawer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    min-height: 50%;
+    width: 100%;
+    padding: 2rem;
+    border-radius: 1rem 1rem 0 0;
+    background: var(--color-primary-dark);
+    i {
+        margin-left: auto;
+        margin-bottom: 1rem;
+    }
+    form {
+        button {
+            width: 100%;
+        }
+    }
+}

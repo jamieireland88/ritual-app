@@ -1,0 +1,6 @@
+#appTitle {
+    transition: font-size 1s;
+    &.small {
+        font-size: 2rem;
+    }
+}

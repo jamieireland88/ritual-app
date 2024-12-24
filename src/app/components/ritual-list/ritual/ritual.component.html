@@ -1,0 +1,10 @@
+<div class="ritual" [class.complete]="ritual.streak >= 365" (click)="view()">
+    <div class="ritual__info">
+        <p class="ritual__name">{{ ritual.name }}</p>
+        <p class="ritual__streak c--light">
+            {{ ritual.streak }}
+            <i class="icon-calendar"></i>
+        </p>
+        <i class="icon-play3 c--primary-dark"></i>
+    </div>
+</div>

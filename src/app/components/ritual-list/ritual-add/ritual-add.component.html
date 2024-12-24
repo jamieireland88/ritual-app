@@ -1,0 +1,7 @@
+<div class="ritual-add-drawer">
+    <i class="icon-cross" (click)="closeDrawer()"></i>
+    <form [formGroup]="addForm">
+        <input type="text" placeholder='Name your Ritual'  formControlName="name" autocomplete="off"/>
+        <button type="submit" (click)="create()" [disabled]="!addForm.valid">Begin</button>
+    </form>
+</div>

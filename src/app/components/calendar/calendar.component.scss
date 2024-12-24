@@ -1,0 +1,33 @@
+:host {
+    width: 100%;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.mirrored {
+    transform: scaleX(-1)
+}
+
+.calendar-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-top: 2rem;
+
+    .calendar-day {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1 / 1;
+        background: var(--color-primary-dark);
+        border-radius: 50%;
+        &.active {
+            background: goldenrod;
+        }
+    }
+}

@@ -1,1 +1,112 @@
-/* You can add global styles to this file, and also import other style files */
+$colors: (
+    'primary': #92E8BD,       // Bubble Algae
+    'primary-dark': #4a947b,
+    'secondary': #4646E3,     // Warm Blue
+    'light': #B4C2BB,
+    'dark': #222623,
+    'white': #fff,
+    'gold': #BF953F
+);
+
+@each $key, $color in $colors {
+    .bg--#{$key} {
+        background: $color;
+    }
+    .c--#{$key} {
+        color: $color;
+    }
+}
+
+:root {
+    @each $key, $color in $colors {
+        --color-#{$key}: #{$color};
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {height: 100vh; overflow: hidden;}
+body {margin: 0;}
+body {
+    font-family: 'Lexend Deca', sans-serif;
+    color: var(--color-white)
+}
+body {
+    background: linear-gradient(#9acab4, #539d86);
+    .bg-overlay {
+        position: fixed;
+        z-index: -1;
+        max-height: 100%;
+        opacity: 0.1;
+    }
+    #main {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            padding-top: 2rem;
+        }
+        #body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            overflow: hidden;
+            padding: 1rem;
+        }
+        #footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+        }
+    }
+}
+
+h1 {
+    font-size: 4rem;
+    margin: 0 0 1rem 0;
+}
+h2 {
+    font-size: 3rem;
+    margin: 0 0 1rem 0;
+}
+h3 {
+    font-size: 2rem;
+    margin: 0 0 1rem 0;
+}
+p, span, li, td, a {
+    font-size: 1rem;
+    margin: 0;
+}
+
+input, select, textarea, button {
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+input, select, textarea {
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    padding: 1rem;
+    width: 100%;
+}
+
+button {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: var(--color-primary-dark);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+    color: var(--color-white);
+}
+
+::placeholder, ::-webkit-input-placeholder, ::-moz-placeholder {
+    color: var(--color-white);
+}

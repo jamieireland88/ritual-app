@@ -64,10 +64,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ritual-app:build:production"
+              "buildTarget": "ritual-app:build:production",
+              "headers": {
+                "Cross-Origin-Opener-Policy":"unsafe-none"
+              }
             },
             "development": {
-              "buildTarget": "ritual-app:build:development"
+              "buildTarget": "ritual-app:build:development",
+              "headers": {
+                "Cross-Origin-Opener-Policy":"unsafe-none"
+              }
             }
           },
           "defaultConfiguration": "development"
@@ -87,7 +93,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "public"
               }
             ],
             "styles": [
@@ -98,5 +105,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "09b6599b-f687-41ee-86b3-a41323810f81"
   }
 }

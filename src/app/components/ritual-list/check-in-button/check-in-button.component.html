@@ -1,0 +1,8 @@
+<button class="mb-10" [disabled]="daily" (click)="checkIn()">
+    @if (!daily) {
+        Check In
+    } @else {
+        Checked in at: {{ daily.getHours() }}:{{ daily.getMinutes() }}
+    }
+</button>
+<app-calendar [id]="id!"></app-calendar>

@@ -1,0 +1,12 @@
+@for (ritual of rituals; track ritual.id; let last=$last) {
+    <app-ritual [ritual]="ritual" [style.margin-bottom]="last ? '2rem': ''"></app-ritual>
+}
+
+<button type="button" id="addButton" (click)="toggleDrawer()">Add new Ritual</button>
+
+@if (drawerIsOpen) {
+    <app-ritual-add
+    (toggleDrawer)="toggleDrawer()"
+    (listChanged)="listChanged()"
+    ></app-ritual-add>
+}
