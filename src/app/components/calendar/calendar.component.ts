@@ -30,6 +30,10 @@ export class CalendarComponent implements OnInit, OnChanges {
     private readonly cdRef: ChangeDetectorRef,
   ){}
 
+  public get isCurrentMonth(): boolean {
+    return this.selectedDate.getMonth() === new Date().getMonth();
+  }
+
   public ngOnInit(): void {
     this.setDate();
   }

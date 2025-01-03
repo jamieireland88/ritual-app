@@ -3,10 +3,10 @@
 }
 
 .title-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
     text-align: center;
+    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .mirrored {

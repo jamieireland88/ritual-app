@@ -25,7 +25,6 @@ export class CheckInButtonComponent implements OnInit {
     const daily: Daily | null = await this.ritualService.getDailyCheckIn(this.id!);
     this.daily = daily!.created;
     this.isLoading = false;
-    console.log(daily);
     // TODO: find a better way to do this that triggers dead on midnight
     const interval = setInterval(() => {
       const hour = new Date().getHours();
