@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TitlePipe } from '../../pipes/title.pipe';
 import { RitualService } from '../../services/ritual.service';
 
@@ -8,8 +8,10 @@ import { RitualService } from '../../services/ritual.service';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnChanges {
   @Input() public id!: string;
+
+  @Input() public daily: Date | null = null;
 
   public language: string = navigator.language;
 
@@ -23,13 +25,22 @@ export class CalendarComponent implements OnInit {
 
   private daysList: number[] = [];
 
-  constructor(private readonly ritualService: RitualService){}
+  constructor(
+    private readonly ritualService: RitualService,
+    private readonly cdRef: ChangeDetectorRef,
+  ){}
 
   public ngOnInit(): void {
     this.setDate();
   }
 
-  public setDate(): void {
+  public ngOnChanges(changes: SimpleChanges): void {
+    if ('daily' in changes && changes['daily'].firstChange === false) {
+      this.ngOnInit();
+    }
+  }
+
+  public async setDate(): Promise<void> {
     this.language = navigator.language;
     this.selectedMonth = this.selectedDate.toLocaleString(
       `${this.language || 'default'}`, { month: 'long' }
@@ -40,8 +51,9 @@ export class CalendarComponent implements OnInit {
       0
     ).getDate();
     this.selectedYear = this.selectedDate.getFullYear();
-    this.ritualService.getMonthlyCheckIns(this.id, this.selectedDate).subscribe((resp) => {
-      this.daysList = resp.map((d) => new Date(d.created).getDate());
+    await this.ritualService.getMonthlyCheckIns(this.id, this.selectedDate).then((resp) => {
+        this.daysList = resp.map((d) => new Date(d.created!).getDate());
+        this.cdRef.markForCheck();
     });
   }
 

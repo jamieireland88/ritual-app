@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RitualService } from '../../../services/ritual.service';
 import { ActivatedRoute } from '@angular/router';
 import { CalendarComponent } from '../../calendar/calendar.component';
+import { Daily } from '../../../models/raw-models';
 
 @Component({
   selector: 'app-check-in-button',
@@ -19,17 +20,25 @@ export class CheckInButtonComponent implements OnInit {
 
   public id: string | null = null;
 
-  public ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.ritualService.getDailyCheckIn(this.id!).subscribe((response) => {
-      this.daily = response?.created ? new Date(response.created) : null;
-      this.isLoading = false;
-    });
+    const daily: Daily | null = await this.ritualService.getDailyCheckIn(this.id!);
+    this.daily = daily!.created;
+    this.isLoading = false;
+    console.log(daily);
+    // TODO: find a better way to do this that triggers dead on midnight
+    const interval = setInterval(() => {
+      const hour = new Date().getHours();
+      if (hour === 0) {
+        clearInterval(interval);
+        this.ngOnInit();
+      }
+    }, 60000);
   }
 
-  public checkIn(): void {
-    this.ritualService.createCheckIn(this.id!).subscribe((response) => {
-      this.daily = response?.created ? new Date(response.created) : null;
+  public async checkIn(): Promise<void> {
+    await this.ritualService.createCheckIn(this.id!).then(() => {
+      this.ngOnInit();
     });
   }
 }

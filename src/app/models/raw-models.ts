@@ -14,6 +14,6 @@ export type ProfileRaw = {
 }
 
 export type Daily = {
-    id: number;
-    created: Date;
+    id: number | string;
+    created: Date | null;
 }

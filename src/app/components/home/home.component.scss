@@ -22,6 +22,18 @@ p {
     text-align: center;
 }
 
-asl-google-signin-button {
+.social-buttons {
     margin-top: auto;
+    .gsi-material-button-content-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: white;
+        padding: 0.5rem 1rem;
+        color: black;
+        border-radius: 50px;
+        .gsi-material-button-icon {
+            width: 30px;
+        }
+    }
 }

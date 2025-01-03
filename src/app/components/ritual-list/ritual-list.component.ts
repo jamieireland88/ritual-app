@@ -30,20 +30,14 @@ export class RitualListComponent {
     this.drawerIsOpen = !this.drawerIsOpen;
   }
 
-  private getRituals(): void {
-    this.ritualService.getRituals().subscribe((items: Ritual[]) => {
-      this.rituals = items;
-    });
+  private async getRituals(): Promise<void> {
+    this.rituals = await this.ritualService.getRituals();
+    return Promise.resolve();
   }
 
-  private loadData(): void {
-    const requests = {
-      rituals: this.ritualService.getRituals(),
-      profile: this.ritualService.getProfile(),
-    }
-    forkJoin(requests).subscribe((responses) => {
-      this.rituals = responses.rituals;
-      console.log(responses.profile);
-    });
+  private async loadData(): Promise<void> {
+    await this.getRituals();
+    await this.ritualService.getProfile();
+    return Promise.resolve();
   }
 }

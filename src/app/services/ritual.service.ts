@@ -1,104 +1,141 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { Ritual, Profile } from '../models/models';
-import { RitualRaw, ProfileRaw, Daily } from '../models/raw-models';
+import { Daily } from '../models/raw-models';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environment';
+import {
+  getFirestore,  getDocs, collection,
+  Firestore, addDoc, DocumentReference,
+  serverTimestamp, where, query, Timestamp,
+  orderBy
+} from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import {
+  Auth, getAuth, signInWithEmailAndPassword, signInWithPopup
+} from "firebase/auth";
+import { Router } from '@angular/router';
+import { GoogleAuthProvider } from "firebase/auth";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RitualService {
-    public get isAuthenticated$(): Observable<boolean> {
-      return this.isAuthenticated.asObservable();
-    }
-    private isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-    constructor(private readonly http: HttpClient){}
-
-    public getRituals(): Observable<Ritual[]> {
-      return this.http.get<RitualRaw[]>(
-        `${environment.apiEndpoint}${environment.rituals}`
-      ).pipe(
-        map((raw: RitualRaw[]) => {
-          return raw.map((item) => {
-            return {
-              id: item.id,
-              name: item.name,
-              streak: item.streak,
-              remindTime: item.remind_time,
-              created: item.created,
-            } as Ritual
-          })
-        }),
-        catchError(() => of([]))
-      )
+    public get userId(): string | null {
+      return this.auth.currentUser?.uid || localStorage.getItem('userId');
     }
 
-    public createRitual(name: string): Observable<RitualRaw> {
-      return this.http.post<RitualRaw>(
-        `${environment.apiEndpoint}${environment.rituals}`,
-        { name }
-      )
+    private db!: Firestore;
+
+    private auth!: Auth;
+
+    constructor(
+      private readonly http: HttpClient,
+      private readonly router: Router,
+    ){
+      this.initFirebase();
     }
 
-    public getProfile(): Observable<Profile | null> {
-      return this.http.get<ProfileRaw>(
-        `${environment.apiEndpoint}${environment.profile}`,
-      ).pipe(
-        map((raw: ProfileRaw) => {
-          return {
-            id: raw.id,
-            notificationSettings: raw.notification_settings,
-            accountType: raw.account_type,
-            created: raw.created,
-          } as Profile
-        }),
-        catchError(() => of(null))
-      )
+    public async initFirebase(): Promise<void> {
+      const app = initializeApp(environment.firebaseConfig);
+      // const analytics = getAnalytics(app);
+      this.auth = getAuth(app);
+      this.db = getFirestore(app);
     }
 
-    public getDailyCheckIn(ritualId: string): Observable<Daily | null> {
-      return this.http.get<Daily>(
-        `${environment.apiEndpoint}${environment.daily}`.replace(
-          '<id>', ritualId
-        )
-      ).pipe(
-        catchError(() => of(null))
-      )
+    public async getRituals(): Promise<Ritual[]> {
+      const rituals: Ritual[] = [];
+      const q = query(collection(this.db, "User", this.userId!, "rituals"), orderBy('created'));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        rituals.push({
+          id: doc.id,
+          name: doc.get('name'),
+          streak: doc.get('streak') || 0,
+          remindTime: doc.get('remindTime'),
+          created: doc.get('created'),
+        } as Ritual);
+      });
+      return Promise.resolve(rituals);
     }
 
-    public createCheckIn(ritualId: string): Observable<Daily> {
-      return this.http.post<Daily>(
-        `${environment.apiEndpoint}${environment.daily}`.replace(
-          '<id>', ritualId
-        ),
-        {}
-      )
+    public async createRitual(name: string): Promise<DocumentReference> {
+      return addDoc(collection(this.db, "User", this.userId!, "rituals"), {
+        name,
+        created: serverTimestamp(),
+        updated: serverTimestamp(),
+      });
     }
 
-    public getMonthlyCheckIns(ritualId: string, date: Date): Observable<Daily[]> {
-      const params = { date: date.toISOString() };
-      return this.http.get<Daily[]>(
-        `${environment.apiEndpoint}${environment.checkins}`.replace(
-          '<id>', ritualId
-        ),
-        { params }
-      ).pipe(
-        catchError(() => of([]))
-      )
+    public async getProfile(): Promise<Profile | null> {
+      const querySnapshot = await getDocs(collection(this.db, "User", this.userId!, "user_profile"));
+      if (!querySnapshot.docs.length) {
+        return Promise.resolve(null);
+      }
+      return Promise.resolve({
+        id: querySnapshot.docs[0]?.id,
+        notificationSettings: querySnapshot.docs[0]?.get('notificationSettings'),
+        accountType: querySnapshot.docs[0]?.get('accountType'),
+        created: (querySnapshot.docs[0]?.get('created') as Timestamp).toDate()
+      } as Profile);
+    }
+
+    public async getDailyCheckIn(ritualId: string): Promise<Daily | null> {
+      const startOfDay = new Date(new Date().setHours(0, 0, 0));
+      const endOfDay = new Date(new Date().setHours(23, 59, 59));
+      const q = query(
+        collection(this.db, "User", this.userId!, "rituals", ritualId, "checkins"),
+        where('created', '>=', Timestamp.fromDate(startOfDay)),
+        where('created', '<=', Timestamp.fromDate(endOfDay)),
+      );
+      const querySnapshot = await getDocs(q);
+      const daily: Daily = {
+        id: '',
+        created: null,
+      }
+      querySnapshot.forEach((doc) => {
+        daily.id = doc.id;
+        daily.created = (doc.get('created') as Timestamp).toDate();
+      });
+      return Promise.resolve(daily);
+    }
+
+    public createCheckIn(ritualId: string): Promise<DocumentReference> {
+      return addDoc(collection(this.db, "User", this.userId!, "rituals", ritualId, "checkins"), {
+        created: serverTimestamp(),
+      });
+    }
+
+    public async getMonthlyCheckIns(ritualId: string, date: Date): Promise<Daily[]> {
+      const startOfMonth = new Date(new Date(new Date(date.getTime()).setDate(1)).setHours(0)).setMinutes(0);
+      const endOfMonth = new Date(new Date(new Date(new Date(date.getTime()).setMonth(date.getMonth() + 1)).setDate(0)).setHours(0)).setMinutes(0);
+      const q = query(
+        collection(this.db, "User", this.userId!, "rituals", ritualId, "checkins"),
+        where('created', '>=', Timestamp.fromDate(new Date(startOfMonth))),
+        where('created', '<=', Timestamp.fromDate(new Date(endOfMonth))),
+      );
+      const querySnapshot = await getDocs(q);
+      const checkins: Daily[] = [];
+      querySnapshot.forEach((doc) => {
+        checkins.push({
+          id: doc.id,
+          created: (doc.get('created') as Timestamp).toDate(),
+        } as Daily);
+      });
+      return Promise.resolve(checkins);
     }
 
     public async login(username: string, password: string): Promise<void> {
-      this.http.post<{token: string}>(
-        `${environment.apiEndpoint}${environment.login}`,
-        { username, password }
-      ).pipe(
-        tap((response) => {
-          this.isAuthenticated.next(true);
-          localStorage.setItem('Authentication', response.token);
-          return Promise.resolve();
-        })
-      ).subscribe();
+      await signInWithEmailAndPassword(this.auth, username, password).then((creds) => {
+        localStorage.setItem('userId', creds.user.uid);
+        this.router.navigate(['rituals']);
+      });
+    }
+
+    public async loginWithGoogle(): Promise<void> {
+      await signInWithPopup(this.auth, new GoogleAuthProvider()).then((result) => {
+        localStorage.setItem('userId', result.user.uid);
+        this.router.navigate(['rituals']);
+      });
     }
 }

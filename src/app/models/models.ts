@@ -1,13 +1,13 @@
 export type Ritual = {
-    id: number;
+    id: string;
     name: string;
     streak: number;
-    remindTime: Date;
-    created: Date;
+    remindTime: Date | null;
+    created: Date | null;
 }
 
 export type Profile = {
-    id: number;
+    id: string;
     notificationSettings: string;
     accountType: string;
     created: Date;

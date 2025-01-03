@@ -36,8 +36,8 @@ export class RitualAddComponent{
     this.toggleDrawer.emit();
   }
 
-  public create() {
-    this.ritualService.createRitual(this.addForm.value.name).subscribe(() => {
+  public async create(): Promise<void> {
+    await this.ritualService.createRitual(this.addForm.value.name).then(() => {
       this.listChanged.emit();
       this.closeDrawer();
     });
