@@ -9,12 +9,12 @@ export function tokenInterceptor(
 ): Observable<HttpEvent<unknown>> {
     const token = localStorage.getItem('Authentication');
     let newReq = req;
-    if (!req.url.includes(environment.login)) {
-        newReq = req.clone({
-            headers: req.headers.append(
-                'Authorization', `Token ${token}`
-            )
-        })
-    }
+    // if (!req.url.includes(environment.login)) {
+    //     newReq = req.clone({
+    //         headers: req.headers.append(
+    //             'Authorization', `Token ${token}`
+    //         )
+    //     })
+    // }
     return next(newReq);
   }
