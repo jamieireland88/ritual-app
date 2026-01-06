@@ -1,17 +1,7 @@
 <img class="bg-overlay" src="bg.jpg"/>
 <div id="main">
   <div id="header">
-    @if (showBackButton) {
-      <i class="icon-play3" (click)="location.back()"></i>
-    }
-    <h1 id="appTitle" (click)="home()">Ritual</h1>
-    @if (showBackButton) {
-      <div class="menu-icon">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    }
+    <app-header></app-header>
   </div>
   <div id="body">
     <router-outlet></router-outlet>

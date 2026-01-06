@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, inject, Input } from '@angular/core';
 import { Ritual } from '../../../models/models';
 import { Router } from '@angular/router';
 
@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
 export class RitualComponent {
   @Input() public ritual!: Ritual;
 
-  constructor(private readonly router: Router){}
+  private readonly router = inject(Router);
 
   public view(): void {
-    this.router.navigate(['/rituals/', this.ritual.id]);
+    this.router.navigate(['/rituals/', this.ritual.id, encodeURI(this.ritual.name)]);
   }
 }

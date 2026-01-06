@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RitualService } from '../../services/ritual.service';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-home',
@@ -13,14 +14,16 @@ import { RitualService } from '../../services/ritual.service';
 export class HomeComponent {
   public loginForm: FormGroup;
 
-  constructor(
-    private readonly ritualService: RitualService,
-    private readonly formBuilder: FormBuilder,
-  ) {
+  private readonly ritualService = inject(RitualService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly headerService = inject(HeaderService);
+
+  constructor() {
     this.loginForm = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
-    })
+    });
+    this.headerService.resetData();
   }
 
   public login(): void {

@@ -14,7 +14,7 @@ export const routes: Routes = [
         .then(mod => mod.RitualListComponent)
     },
     {
-        path: 'rituals/:id',
+        path: 'rituals/:id/:name',
         loadComponent: () => import(
             './components/ritual-list/check-in-button/check-in-button.component')
         .then(mod => mod.CheckInButtonComponent)

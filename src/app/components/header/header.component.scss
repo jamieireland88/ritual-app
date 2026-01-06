@@ -1,0 +1,41 @@
+:host {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#appBackButton {
+    justify-self: flex-start;
+    transform: scaleX(-1);
+}
+
+#appTitle {
+    justify-self: center;
+    text-align: center;
+    transition: font-size 0.3s;
+    margin: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    &.small {
+        font-size: 1.5rem;
+    }
+}
+
+#appMenu {
+    justify-self: flex-end;
+    .menu-icon {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        &>div {
+            width: 30px;
+            height: 5px;
+            border-radius: 20px;
+            background: white;
+        }
+    }
+}

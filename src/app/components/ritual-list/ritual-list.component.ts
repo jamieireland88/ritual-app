@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RitualService } from '../../services/ritual.service';
 import { Ritual } from '../../models/models';
 import { RitualComponent } from './ritual/ritual.component';
 import { RitualAddComponent } from './ritual-add/ritual-add.component';
-import { forkJoin, map, Observable, of } from 'rxjs';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-ritual-list',
@@ -16,10 +16,16 @@ export class RitualListComponent {
 
   public drawerIsOpen: boolean = false;
 
-  constructor(
-    private readonly ritualService: RitualService,
-  ){
+  private readonly ritualService = inject(RitualService);
+
+  private readonly headerService = inject(HeaderService);
+
+  constructor(){
     this.loadData();
+    this.headerService.setData({
+      title: 'My Rituals',
+      showMenuButton: true,
+    })
   }
 
   public listChanged(): void {
