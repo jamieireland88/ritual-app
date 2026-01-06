@@ -38,12 +38,9 @@ export class RitualService {
 
     public async initFirebase(): Promise<void> {
       const app = initializeApp(environment.firebaseConfig);
-      this.auth = getAuth(app);
-      if (Capacitor.isNativePlatform()) {
-        this.auth = initializeAuth(app, {
-          persistence: indexedDBLocalPersistence
-        });
-      }
+      this.auth = initializeAuth(app, {
+        persistence: indexedDBLocalPersistence
+      });
       // const analytics = getAnalytics(app);
       this.db = getFirestore(app);
     }
