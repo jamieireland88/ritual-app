@@ -126,16 +126,24 @@ export class RitualService {
     }
 
     public async login(username: string, password: string): Promise<void> {
-      await signInWithEmailAndPassword(this.auth, username, password).then((creds) => {
-        localStorage.setItem('userId', creds.user.uid);
-        this.router.navigate(['rituals']);
-      });
+      try {
+        await signInWithEmailAndPassword(this.auth, username, password).then((creds) => {
+          localStorage.setItem('userId', creds.user.uid);
+          this.router.navigate(['rituals']);
+        });
+      } catch (error) {
+        alert(error);
+      }
     }
 
     public async loginWithGoogle(): Promise<void> {
-      await signInWithPopup(this.auth, new GoogleAuthProvider()).then((result) => {
-        localStorage.setItem('userId', result.user.uid);
-        this.router.navigate(['rituals']);
-      });
+      try {
+        await signInWithPopup(this.auth, new GoogleAuthProvider()).then((result) => {
+          localStorage.setItem('userId', result.user.uid);
+          this.router.navigate(['rituals']);
+        });
+      } catch (error) {
+        alert(error);
+      }
     }
 }

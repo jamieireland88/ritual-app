@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.ritual.app',
-  appName: 'ritual-app',
+  appId: 'com.owlsnake-studios.ritual',
+  appName: 'ritual',
   webDir: 'dist/ritual-app/browser'
 };
 
