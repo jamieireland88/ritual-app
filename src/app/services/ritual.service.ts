@@ -129,7 +129,8 @@ export class RitualService {
       try {
         await signInWithEmailAndPassword(this.auth, username, password).then((creds) => {
           localStorage.setItem('userId', creds.user.uid);
-          this.router.navigate(['rituals']);
+          alert(creds.user.uid);
+          this.router.navigateByUrl('/rituals');
         });
       } catch (error) {
         alert(error);
@@ -140,7 +141,7 @@ export class RitualService {
       try {
         await signInWithPopup(this.auth, new GoogleAuthProvider()).then((result) => {
           localStorage.setItem('userId', result.user.uid);
-          this.router.navigate(['rituals']);
+          this.router.navigateByUrl('/rituals');
         });
       } catch (error) {
         alert(error);
