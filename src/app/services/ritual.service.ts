@@ -10,12 +10,12 @@ import {
   orderBy
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import {
-  Auth, getAuth, signInWithEmailAndPassword, signInWithPopup
+  Auth, getAuth, indexedDBLocalPersistence, initializeAuth, signInWithEmailAndPassword, signInWithPopup
 } from "firebase/auth";
 import { Router } from '@angular/router';
 import { GoogleAuthProvider } from "firebase/auth";
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -38,8 +38,13 @@ export class RitualService {
 
     public async initFirebase(): Promise<void> {
       const app = initializeApp(environment.firebaseConfig);
-      // const analytics = getAnalytics(app);
       this.auth = getAuth(app);
+      if (Capacitor.isNativePlatform()) {
+        this.auth = initializeAuth(app, {
+          persistence: indexedDBLocalPersistence
+        });
+      }
+      // const analytics = getAnalytics(app);
       this.db = getFirestore(app);
     }
 
@@ -126,25 +131,16 @@ export class RitualService {
     }
 
     public async login(username: string, password: string): Promise<void> {
-      try {
-        await signInWithEmailAndPassword(this.auth, username, password).then((creds) => {
-          localStorage.setItem('userId', creds.user.uid);
-          alert(creds.user.uid);
-          this.router.navigateByUrl('/rituals');
-        });
-      } catch (error) {
-        alert(error);
-      }
+      await signInWithEmailAndPassword(this.auth, username, password).then((creds) => {
+        localStorage.setItem('userId', creds.user.uid);
+        this.router.navigateByUrl('/rituals');
+      });
     }
 
     public async loginWithGoogle(): Promise<void> {
-      try {
-        await signInWithPopup(this.auth, new GoogleAuthProvider()).then((result) => {
-          localStorage.setItem('userId', result.user.uid);
-          this.router.navigateByUrl('/rituals');
-        });
-      } catch (error) {
-        alert(error);
-      }
+      await signInWithPopup(this.auth, new GoogleAuthProvider()).then((result) => {
+        localStorage.setItem('userId', result.user.uid);
+        this.router.navigateByUrl('/rituals');
+      });
     }
 }
