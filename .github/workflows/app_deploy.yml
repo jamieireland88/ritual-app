@@ -12,10 +12,6 @@ jobs:
 
     runs-on: macos-latest
 
-    defaults:
-      run:
-        working-directory: 'ios/App/App'
-
     strategy:
       matrix:
         node-version: [24.x]
@@ -43,6 +39,7 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npx cap update ios && npx cap copy ios && npx cap sync ios
+    - run: cd ios/App
     - name: Deploy
       uses: vfrascello/xcode-deploy@v1.5
       with:
