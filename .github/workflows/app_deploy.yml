@@ -44,6 +44,7 @@ jobs:
     - name: Deploy
       uses: vfrascello/xcode-deploy@v1.5
       with:
+        configuration: 'Release'
         path-to-export-options: 'ExportOptions.plist'
         update-build: true
         install-pods: false
