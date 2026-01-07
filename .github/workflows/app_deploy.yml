@@ -45,7 +45,7 @@ jobs:
       with:
         configuration: 'Release'
         scheme: 'App'
-        path-to-export-options: 'ExportOptions.plist'
+        path-to-export-options: 'ios/App/ExportOptions.plist'
         update-build: true
         install-pods: false
         resolve-package-dependencies: true
