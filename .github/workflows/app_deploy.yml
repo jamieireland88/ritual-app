@@ -41,3 +41,17 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npx cap update ios && npx cap copy ios && npx cap sync ios
+    - name: Deploy
+      uses: vfrascello/xcode-deploy@v1.5
+      with:
+        path-to-export-options: 'ExportOptions.plist'
+        update-build: true
+        install-pods: false
+        resolve-package-dependencies: true
+        distribution-certificate-p12: ${{ secrets.DISTRIBUTION_CERTIFICATE_P12 }}
+        distribution-certificate-password: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
+        app-store-provisioning-profile: ${{ secrets.APPSTORE_PROVISIONING_PROFILE }}
+        auth-key-id: ${{ secrets.AUTH_KEY_ID }}
+        auth-key-issuer-id: ${{ secrets.AUTH_KEY_ISSUER_ID }}
+        auth-key-p8: ${{ secrets.AUTH_KEY_P8 }}
+  
