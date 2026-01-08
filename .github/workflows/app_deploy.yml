@@ -60,5 +60,8 @@ jobs:
     #     auth-key-p8: ${{ secrets.AUTH_KEY_P8 }}
     - name: Deploy
       working-directory: 'ios/App/'
-      run: xcodebuild clean build -destination "generic/platform=iOS" -configuration "Release" -project "App.xcodeproj" -allowProvisioningUpdates -exportArchive -exportPath "~/" -exportOptionsPlist "ExportOptions.plist"
+      run: |
+        xcodebuild clean -project 'App.xcodeproj' -scheme 'App' -configuration 'Release' -verbose
+        xcodebuild archive 'App.xcodeproj' -scheme 'App' -configuration 'Release' -archivePath './build/App.xcarchive' -destination 'generic/platform=iOS' -verbose
+        xcodebuild -exportArchive -archivePath './build/App.xcarchive' -exportOptionsPlist 'ExportOptions.plist' \-exportPath './build/ipa' -verbose
   
