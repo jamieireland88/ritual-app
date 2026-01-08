@@ -80,8 +80,7 @@ jobs:
         xcodebuild clean -workspace 'App.xcworkspace' -scheme 'App' -configuration 'Release' -quiet
         xcodebuild archive -workspace 'App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath './build/App.xcarchive' -destination 'generic/platform=iOS' -quiet
         xcodebuild -exportArchive -archivePath './build/App.xcarchive' -exportOptionsPlist 'ExportOptions.plist' -exportPath './build/ipa' -quiet
-    - run: ls
-    - run: cd ./build/ipa && ls
+    - run: ios/App/ && ls
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
