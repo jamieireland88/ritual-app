@@ -62,6 +62,6 @@ jobs:
       working-directory: 'ios/App/'
       run: |
         xcodebuild clean -project 'App.xcodeproj' -scheme 'App' -configuration 'Release' -verbose
-        xcodebuild archive 'App.xcodeproj' -scheme 'App' -configuration 'Release' -archivePath './build/App.xcarchive' -destination 'generic/platform=iOS' -verbose
+        xcodebuild archive -project 'App.xcodeproj' -scheme 'App' -configuration 'Release' -archivePath './build/App.xcarchive' -destination 'generic/platform=iOS' -verbose
         xcodebuild -exportArchive -archivePath './build/App.xcarchive' -exportOptionsPlist 'ExportOptions.plist' \-exportPath './build/ipa' -verbose
   
