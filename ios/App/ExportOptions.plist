@@ -17,7 +17,7 @@
   <key>provisioningProfiles</key>
   <dict>
     <key>com.owlsnake-studios.ritual</key>
-    <string>profile</string>
+    <string>profile.mobileprovision</string>
   </dict>
 </dict>
 </plist>
