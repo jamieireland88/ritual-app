@@ -70,8 +70,8 @@ jobs:
     - name: Deploy
       working-directory: 'ios/App/'
       run: |
-        pod install
-        xcodebuild clean -workspace 'App.xcworkspace' -scheme 'App' -configuration 'Release' -verbose
-        xcodebuild archive -workspace 'App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath './build/App.xcarchive' -destination 'generic/platform=iOS' -verbose
+        xcodebuild -list
+        xcodebuild clean -workspace 'App.xcworkspace' -scheme 'App' -configuration 'Release'
+        xcodebuild archive -workspace 'App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath './build/App.xcarchive' -destination 'generic/platform=iOS'
         xcodebuild -exportArchive -archivePath './build/App.xcarchive' -exportOptionsPlist 'ExportOptions.plist' \-exportPath './build/ipa' -verbose
   
