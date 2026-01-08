@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>destination</key>
-	<string>export</string>
 	<key>method</key>
 	<string>enterprise</string>
 	<key>signingStyle</key>
@@ -17,7 +15,9 @@
   <key>provisioningProfiles</key>
   <dict>
     <key>com.owlsnake-studios.ritual</key>
-    <string>profile.mobileprovision</string>
+    <string>Ritual.mobileprovision</string>
   </dict>
+  <key>signingCertificate</key>
+  <string>build_certificate.p12</string>
 </dict>
 </plist>
