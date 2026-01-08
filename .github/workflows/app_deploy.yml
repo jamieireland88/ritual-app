@@ -87,4 +87,11 @@ jobs:
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v5
-      - run: ls -R
+      - name: Upload to TestFlight
+        uses: henrik1/upload-testflight@v2.0.0
+        with:
+          app-path: 'App.ipa'
+          app-type: 'ios'
+          issuer-id: ${{ secrets.AUTH_KEY_ISSUER_ID }}
+          api-key-id: ${{ secrets.AUTH_KEY_ID }}
+          api-private-key: ${{ secrets.AUTH_KEY_P8 }}
