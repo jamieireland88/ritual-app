@@ -65,7 +65,7 @@ jobs:
     - name: Bump build version
       uses: thermogl/xcode-version-setter@v0.3
       with:
-        style: 'hextime'
+        style: 'time'
         working-directory: 'ios/App/'
     - name: Export App.ipa file
       working-directory: 'ios/App/'
