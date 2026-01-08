@@ -58,16 +58,19 @@ jobs:
     #     auth-key-id: ${{ secrets.AUTH_KEY_ID }}
     #     auth-key-issuer-id: ${{ secrets.AUTH_KEY_ISSUER_ID }}
     #     auth-key-p8: ${{ secrets.AUTH_KEY_P8 }}
-    - uses: nickwph/apple-provisioning-profile-action@v1
+    - name: Install provisioning profile
+      uses: nickwph/apple-provisioning-profile-action@v1
       with:
         profile-base64: ${{ secrets.APPSTORE_PROVISIONING_PROFILE }}
-    - uses: nickwph/apple-build-certificate-action@v1
+    - name: Install distribution certificate
+      uses: nickwph/apple-build-certificate-action@v1
       with:
         certificate-base64: ${{ secrets.DISTRIBUTION_CERTIFICATE_P12 }}
         certificate-password: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
     - name: Deploy
       working-directory: 'ios/App/'
       run: |
+        pod install
         xcodebuild clean -project 'App.xcodeproj' -scheme 'App' -configuration 'Release' -verbose
         xcodebuild archive -project 'App.xcodeproj' -scheme 'App' -configuration 'Release' -archivePath './build/App.xcarchive' -destination 'generic/platform=iOS' -verbose
         xcodebuild -exportArchive -archivePath './build/App.xcarchive' -exportOptionsPlist 'ExportOptions.plist' \-exportPath './build/ipa' -verbose
