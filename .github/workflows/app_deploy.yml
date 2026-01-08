@@ -67,6 +67,8 @@ jobs:
       with:
         certificate-base64: ${{ secrets.DISTRIBUTION_CERTIFICATE_P12 }}
         certificate-password: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
+    - name: List profiles
+      run: cd ~/Library/MobileDevice/Provisioning\ Profiles && ls
     - name: Deploy
       working-directory: 'ios/App/'
       run: |
