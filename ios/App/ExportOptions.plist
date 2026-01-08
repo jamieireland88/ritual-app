@@ -15,9 +15,7 @@
   <key>provisioningProfiles</key>
   <dict>
     <key>com.owlsnake-studios.ritual</key>
-    <string>Ritual.mobileprovision</string>
+    <string>Ritual</string>
   </dict>
-  <key>signingCertificate</key>
-  <string>build_certificate.p12</string>
 </dict>
 </plist>
