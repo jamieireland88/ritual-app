@@ -1,6 +1,3 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Apple Deployment
 
 on:
@@ -42,31 +39,6 @@ jobs:
       run: npm run build --if-present
     - name: Capacitor sync
       run: npx cap update ios && npx cap copy ios && npx cap sync ios
-    # - name: Deploy
-    #   uses: vfrascello/xcode-deploy@v1.5
-    #   with:
-    #     working-directory: 'ios/App'
-    #     configuration: 'Release'
-    #     scheme: 'App'
-    #     path-to-export-options: 'ios/App/ExportOptions.plist'
-    #     update-build: true
-    #     install-pods: false
-    #     resolve-package-dependencies: true
-    #     distribution-certificate-p12: ${{ secrets.DISTRIBUTION_CERTIFICATE_P12 }}
-    #     distribution-certificate-password: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
-    #     app-store-provisioning-profile: ${{ secrets.APPSTORE_PROVISIONING_PROFILE }}
-    #     auth-key-id: ${{ secrets.AUTH_KEY_ID }}
-    #     auth-key-issuer-id: ${{ secrets.AUTH_KEY_ISSUER_ID }}
-    #     auth-key-p8: ${{ secrets.AUTH_KEY_P8 }}
-    # - name: Install provisioning profile
-    #   uses: nickwph/apple-provisioning-profile-action@v1
-    #   with:
-    #     profile-base64: ${{ secrets.APPSTORE_PROVISIONING_PROFILE }}
-    # - name: Install distribution certificate
-    #   uses: nickwph/apple-build-certificate-action@v1
-    #   with:
-    #     certificate-base64: ${{ secrets.DISTRIBUTION_CERTIFICATE_P12 }}
-    #     certificate-password: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
     - name: Install the Apple certificate and provisioning profile
       env:
         BUILD_CERTIFICATE_BASE64: ${{ secrets.DISTRIBUTION_CERTIFICATE_P12 }}
@@ -96,13 +68,15 @@ jobs:
         # apply provisioning profile
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
         cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-    - name: List profiles
-      run: cd ~/Library/MobileDevice/Provisioning\ Profiles && ls
-    - name: Deploy
+    - name: Export App.ipa file
       working-directory: 'ios/App/'
       run: |
         xcodebuild -list
         xcodebuild clean -workspace 'App.xcworkspace' -scheme 'App' -configuration 'Release'
         xcodebuild archive -workspace 'App.xcworkspace' -scheme 'App' -configuration 'Release' -archivePath './build/App.xcarchive' -destination 'generic/platform=iOS'
-        xcodebuild -exportArchive -archivePath './build/App.xcarchive' -exportOptionsPlist 'ExportOptions.plist' \-exportPath './build/ipa' -verbose
-  
+        xcodebuild -exportArchive -archivePath './build/App.xcarchive' -exportOptionsPlist 'ExportOptions.plist' \-exportPath './build/ipa'
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: 'App.ipa'
+        path: './build/ipa/'
