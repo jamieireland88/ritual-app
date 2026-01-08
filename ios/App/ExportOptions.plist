@@ -17,7 +17,7 @@
   <key>provisioningProfiles</key>
   <dict>
     <key>com.owlsnake-studios.ritual</key>
-    <string>Ritual</string>
+    <string>profile</string>
   </dict>
 </dict>
 </plist>
