@@ -36,10 +36,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Install requirements
     - run: npm ci
+    - name: Build application
     - run: npm run build --if-present
+    - name: Capacitor sync
     - run: npx cap update ios && npx cap copy ios && npx cap sync ios
-    - run: cd ios/App
     # - name: Deploy
     #   uses: vfrascello/xcode-deploy@v1.5
     #   with:
@@ -58,5 +60,5 @@ jobs:
     #     auth-key-p8: ${{ secrets.AUTH_KEY_P8 }}
     - name: Deploy
       working-directory: 'ios/App/'
-      run: xcodebuild clean build -destination "generic/platform=iOS" -configuration "Release" -project "App.xcodeproj" -archivePath "App.xcarchive" -allowProvisioningUpdates -exportArchive -exportPath "~/" -exportOptionsPlist "ExportOptions.plist"
+      run: xcodebuild clean build -destination "generic/platform=iOS" -configuration "Release" -project "App.xcodeproj" -allowProvisioningUpdates -exportArchive -exportPath "~/" -exportOptionsPlist "ExportOptions.plist"
   
