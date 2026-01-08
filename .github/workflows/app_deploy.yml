@@ -86,3 +86,12 @@ jobs:
       with:
         name: 'App.ipa'
         path: 'ios/App/build/ipa/App.ipa'
+
+  deploy:
+
+    runs-on: macos-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v5
+      - run: ls -R
