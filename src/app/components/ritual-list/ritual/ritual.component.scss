@@ -1,21 +1,73 @@
-:host {
-    --fill-width: 0%;
-}
-
 .ritual {
-    border-bottom: 0.5px solid var(--color-dark);
-    padding: 2rem 0;
-    margin: 0 1rem;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    background: var(--color-white);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    gap: 1rem;
 
     &__info {
-        color: var(--color-dark);
         display: flex;
-        justify-content: flex-end;
-        .ritual__name {
-            margin-right: auto;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__name {
+        color: var(--color-dark);
+        font-size: 1.2rem;
+    }
+
+    .icon-fire {
+        color: orangered;
+    }
+
+    &__icon {
+        position:  relative;
+        aspect-ratio: 1 / 1;
+        background: rgba($color: #92E8BD, $alpha: 0.3);
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-height: 3rem;
+        &--image {
+            color: var(--color-primary-dark);
+            font-size: 2rem;
         }
-        i {
-            margin-left: 0.5rem;
+        &--streak {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            transform: translate(0.75rem, 0.75rem);
+            background: var(--color-white);
+            gap: 0.25rem;
+            padding: 0.25rem;
+            font-size: 0.75rem;
+            border-radius: 1rem;
+            display: flex;
+            color: var(--color-dark);
+            i {
+                color: orangered;
+            }
         }
+    }
+
+    &__check {
+        border-radius: 100%;
+        aspect-ratio: 1 / 1;
+        background: var(--color-primary-dark);
+        margin: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-height: 2rem;
+        justify-self: flex-end;
+    }
+
+    &__subtitle {
+        display: flex;
+        font-size: 1rem;
+        align-items: center;
+        gap: 0.5rem;
     }
 }
