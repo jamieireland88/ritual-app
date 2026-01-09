@@ -1,6 +1,6 @@
 .ritual {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 0.1fr 1fr 3fr 1fr;
     background: var(--color-white);
     padding: 1rem;
     border-radius: 0.5rem;
@@ -63,6 +63,7 @@
         justify-content: center;
         max-height: 2rem;
         justify-self: flex-end;
+        box-shadow: 0 0 0 5px rgba($color: #92E8BD, $alpha: 0.5);
     }
 
     &__subtitle {
@@ -70,6 +71,19 @@
         font-size: 1rem;
         align-items: center;
         gap: 0.5rem;
+    }
+    &__handle {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.25rem;
+        align-self: center;
+        width: 0.5rem;
+        div {
+            border-radius: 50%;
+            width: 0.25rem;
+            aspect-ratio: 1 / 1;
+            background: lightgrey;
+        }
     }
 }
 

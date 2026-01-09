@@ -1,8 +1,17 @@
 <div class="ritual" (click)="view()">
+    <div cdkDragHandle class="ritual__handle">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
     <div class="ritual__icon">
         <i class="icon-alarm ritual__icon--image"></i>
         <span class="ritual__icon--streak">
-            {{ ritual.streak }}
+            <!-- {{ ritual.streak }} -->
+            999
             <i class="icon-fire"></i>
         </span>
     </div>
