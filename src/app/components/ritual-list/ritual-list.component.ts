@@ -4,10 +4,11 @@ import { Ritual } from '../../models/models';
 import { RitualComponent } from './ritual/ritual.component';
 import { RitualAddComponent } from './ritual-add/ritual-add.component';
 import { HeaderService } from '../../services/header.service';
+import { DragDropModule, CdkDragDrop, moveItemInArray, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-ritual-list',
-  imports: [RitualComponent, RitualAddComponent],
+  imports: [RitualComponent, RitualAddComponent, DragDropModule, CdkDragPlaceholder],
   templateUrl: './ritual-list.component.html',
   styleUrl: './ritual-list.component.scss'
 })
@@ -26,6 +27,10 @@ export class RitualListComponent {
       title: 'My Rituals',
       showMenuButton: true,
     })
+  }
+
+  public drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.rituals, event.previousIndex, event.currentIndex);
   }
 
   public listChanged(): void {

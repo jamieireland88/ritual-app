@@ -5,6 +5,7 @@
     padding: 1rem;
     border-radius: 0.5rem;
     gap: 1rem;
+    overflow: hidden;
 
     &__info {
         display: flex;
@@ -69,5 +70,11 @@
         font-size: 1rem;
         align-items: center;
         gap: 0.5rem;
+    }
+}
+
+:host {
+    .cdk-drag-animating {
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
 }

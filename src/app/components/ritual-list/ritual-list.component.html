@@ -1,6 +1,11 @@
-@for (ritual of rituals; track ritual.id; let last=$last) {
-    <app-ritual [ritual]="ritual" [style.margin-bottom]="last ? '2rem': ''"></app-ritual>
-}
+<div class="rituals-list" cdkDropList (cdkDropListDropped)="drop($event)">
+    @for (ritual of rituals; track ritual.id; let last=$last) {
+        <div cdkDrag>
+            <div class="drag-drop-placeholder" *cdkDragPlaceholder></div>
+            <app-ritual [ritual]="ritual" [style.margin-bottom]="last ? '2rem': ''"></app-ritual>
+        </div>
+    }
+</div>
 
 <button type="button" id="addButton" (click)="toggleDrawer()">Add new Ritual</button>
 
