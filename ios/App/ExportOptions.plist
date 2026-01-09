@@ -12,10 +12,12 @@
 	<string>3S8MGA48W4</string>
 	<key>thinning</key>
 	<string>&lt;none&gt;</string>
-  <key>provisioningProfiles</key>
-  <dict>
-    <key>com.owlsnake-studios.ritual</key>
-    <string>Ritual</string>
-  </dict>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.owlsnake-studios.ritual</key>
+		<string>Ritual</string>
+    </dict>
+	<key>testFlightInternalTestingOnly</key>
+	<true/>
 </dict>
 </plist>
