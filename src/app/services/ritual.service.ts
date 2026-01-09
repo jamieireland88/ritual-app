@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Ritual, Profile } from '../models/models';
+import { Ritual, Profile, RitualType } from '../models/models';
 import { Daily } from '../models/raw-models';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environment';
@@ -30,7 +30,6 @@ export class RitualService {
     private auth!: Auth;
 
     constructor(
-      private readonly http: HttpClient,
       private readonly router: Router,
     ){
       this.initFirebase();
@@ -53,9 +52,11 @@ export class RitualService {
         rituals.push({
           id: doc.id,
           name: doc.get('name'),
-          streak: doc.get('streak') || 0,
-          remindTime: doc.get('remindTime'),
+          streak: Math.floor(Math.random() * 100), 
+          remindTime: Math.random() < 0.5 ? new Date() : null,
           created: doc.get('created'),
+          actioned: Math.random() < 0.5 ? true : false,
+          type: Math.random() < 0.5 ? RitualType.Daily : RitualType.Monthly
         } as Ritual);
       });
       return Promise.resolve(rituals);

@@ -1,9 +1,17 @@
+export enum RitualType {
+    Daily = 'daily',
+    Monthly = 'monthly'
+}
+
 export type Ritual = {
     id: string;
     name: string;
     streak: number;
     remindTime: Date | null;
     created: Date | null;
+    sortOrder: number;
+    actioned: boolean;
+    type: RitualType;
 }
 
 export type Profile = {
