@@ -5,10 +5,18 @@ import { RitualComponent } from './ritual/ritual.component';
 import { RitualAddComponent } from './ritual-add/ritual-add.component';
 import { HeaderService } from '../../services/header.service';
 import { DragDropModule, CdkDragDrop, moveItemInArray, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
+import { NgxPullToRefreshComponent } from 'ngx-pull-to-refresh';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-ritual-list',
-  imports: [RitualComponent, RitualAddComponent, DragDropModule, CdkDragPlaceholder],
+  imports: [
+    RitualComponent,
+    RitualAddComponent,
+    DragDropModule,
+    CdkDragPlaceholder,
+    NgxPullToRefreshComponent
+  ],
   templateUrl: './ritual-list.component.html',
   styleUrl: './ritual-list.component.scss'
 })
@@ -33,8 +41,9 @@ export class RitualListComponent {
     moveItemInArray(this.rituals, event.previousIndex, event.currentIndex);
   }
 
-  public listChanged(): void {
-    this.getRituals();
+  public async listChanged(event?: Subject<void>): Promise<void> {
+    await this.getRituals();
+    event?.next();
   }
 
   public toggleDrawer() {

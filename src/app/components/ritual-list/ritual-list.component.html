@@ -1,4 +1,13 @@
-<div class="rituals-list" cdkDropList (cdkDropListDropped)="drop($event)">
+<ngx-pull-to-refresh
+    #ritualsList
+    cdkDropList
+    (cdkDropListDropped)="drop($event)"
+	spinnerColor="#ffffff"
+    [spinnerSize]="20"
+	[distanceForRefresh]="100"
+    [isEnable]="true"
+	(refresh)="listChanged($event)"
+	customClass="rituals-list">
     @for (ritual of rituals; track ritual.id; let last=$last) {
         <div cdkDrag>
             <div class="drag-drop-placeholder" *cdkDragPlaceholder></div>
@@ -9,7 +18,8 @@
         <i class="icon-plus"></i>
         <span>Add new Ritual</span>
     </div>
-</div>
+</ngx-pull-to-refresh>
+
 
 @if (drawerIsOpen) {
     <app-ritual-add
