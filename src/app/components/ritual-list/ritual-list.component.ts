@@ -7,6 +7,7 @@ import { HeaderService } from '../../services/header.service';
 import { DragDropModule, CdkDragDrop, moveItemInArray, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
 import { NgxPullToRefreshComponent } from 'ngx-pull-to-refresh';
 import { Subject } from 'rxjs';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 @Component({
   selector: 'app-ritual-list',
@@ -39,6 +40,10 @@ export class RitualListComponent {
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.rituals, event.previousIndex, event.currentIndex);
+  }
+
+  public swapped(): void {
+    Haptics.impact({ style: ImpactStyle.Light });
   }
 
   public async listChanged(event?: Subject<void>): Promise<void> {
