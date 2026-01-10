@@ -1,3 +1,5 @@
+@use 'app/styles/animations';
+
 $colors: (
     'primary': #92E8BD,       // Bubble Algae
     'primary-dark': #4a947b,
@@ -58,7 +60,6 @@ body {
             align-items: center;
             flex-grow: 1;
             overflow: hidden;
-            padding: 1rem;
         }
         #footer {
             display: flex;

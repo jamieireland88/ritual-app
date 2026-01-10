@@ -1,4 +1,4 @@
-<div class="ritual" (click)="view()">
+<div #ritualEle class="ritual" (click)="view()">
     <div cdkDragHandle class="ritual__handle--area"></div>
     <div class="ritual__handle">
         <div></div>
@@ -12,7 +12,7 @@
         <i class="icon-alarm ritual__icon--image"></i>
         <span class="ritual__icon--streak">
             {{ ritual.streak }}
-            <i class="icon-fire"></i>
+            <i #fire class="icon-fire"></i>
         </span>
     </div>
     <div class="ritual__info">
@@ -26,11 +26,13 @@
     </div>
     <div class="ritual__check">
         @if (ritual.actioned) {
-            <div class="ritual__check--fill">
+            <div #check class="ritual__check--fill">
                 <i class="icon-checkmark"></i>
             </div>
         } @else {
-            <div class="ritual__check--empty" (click)="action($event)"></div>
+            <div class="ritual__check--empty" (click)="action($event)">
+                <i class="icon-checkmark"></i>
+            </div>
         }
     </div>
 </div>

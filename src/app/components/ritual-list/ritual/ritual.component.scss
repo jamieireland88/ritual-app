@@ -21,6 +21,7 @@
 
     .icon-fire {
         color: orangered;
+        transform-origin: 50% 100%;
     }
 
     &__icon {
@@ -75,7 +76,11 @@
         &--empty {
             width: 32px;
             height: 32px;
-            background: lightgrey;
+            background: var(--color-white);
+            i {
+                opacity: 0.3;
+                color: var(--color-primary-dark);
+            }
         }
     }
 
