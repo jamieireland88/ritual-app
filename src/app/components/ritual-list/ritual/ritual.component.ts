@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { gsap } from 'gsap';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { RitualService } from '../../../services/ritual.service';
 
 @Component({
   selector: 'app-ritual',
@@ -24,6 +25,8 @@ export class RitualComponent {
 
   private readonly cdRef = inject(ChangeDetectorRef);
 
+  private readonly ritualService = inject(RitualService);
+
   public view(): void {
     this.router.navigate(['/rituals/', this.ritual.id, encodeURI(this.ritual.name)]);
   }
@@ -43,5 +46,6 @@ export class RitualComponent {
     .play();
     this.ritual.streak++;
     Haptics.impact({ style: ImpactStyle.Heavy });
+    this.ritualService.createCheckIn(this.ritual.id);
   }
 }

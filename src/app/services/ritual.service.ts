@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Ritual, Profile, RitualType } from '../models/models';
 import { Daily } from '../models/raw-models';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environment';
 import {
   getFirestore,  getDocs, collection,
   Firestore, addDoc, DocumentReference,
   serverTimestamp, where, query, Timestamp,
-  orderBy
+  orderBy,
+  updateDoc,
+  doc, writeBatch
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import {
-  Auth, getAuth, indexedDBLocalPersistence, initializeAuth, signInWithEmailAndPassword, signInWithPopup
+  Auth, indexedDBLocalPersistence, initializeAuth, signInWithEmailAndPassword, signInWithPopup
 } from "firebase/auth";
 import { Router } from '@angular/router';
 import { GoogleAuthProvider } from "firebase/auth";
-import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -52,10 +52,10 @@ export class RitualService {
         rituals.push({
           id: doc.id,
           name: doc.get('name'),
-          streak: Math.floor(Math.random() * 100), 
+          streak: Math.floor(Math.random() * 100),
           remindTime: Math.random() < 0.5 ? new Date() : null,
           created: doc.get('created'),
-          actioned: Math.random() < 0.5 ? true : false,
+          actioned: this.lastCheckinWasToday(doc.get('lastCheckin')),
           type: Math.random() < 0.5 ? RitualType.Daily : RitualType.Monthly
         } as Ritual);
       });
@@ -104,6 +104,7 @@ export class RitualService {
     }
 
     public createCheckIn(ritualId: string): Promise<DocumentReference> {
+      updateDoc(doc(this.db, "User", this.userId!, "rituals", ritualId), { lastCheckin: new Date().toISOString() });
       return addDoc(collection(this.db, "User", this.userId!, "rituals", ritualId, "checkins"), {
         created: serverTimestamp(),
       });
@@ -128,6 +129,10 @@ export class RitualService {
       return Promise.resolve(checkins);
     }
 
+    public updateSortOrder(rituals: Ritual[]) {
+      // writeBatch(this.db);
+    }
+
     public async login(username: string, password: string): Promise<void> {
       await signInWithEmailAndPassword(this.auth, username, password).then((creds) => {
         localStorage.setItem('userId', creds.user.uid);
@@ -140,5 +145,21 @@ export class RitualService {
         localStorage.setItem('userId', result.user.uid);
         this.router.navigateByUrl('/rituals');
       });
+    }
+
+    private lastCheckinWasToday(checkin?: string): boolean {
+      if (!checkin) return false;
+
+      const today = new Date();
+        // Compare only the date components (year, month, day) of both today and checkin
+      const checkinDate = new Date(checkin);
+      if (
+        today.getFullYear() === checkinDate.getFullYear() &&
+        today.getMonth() === checkinDate.getMonth() &&
+        today.getDate() === checkinDate.getDate()
+      ) {
+        return true;
+      }
+      return false;
     }
 }

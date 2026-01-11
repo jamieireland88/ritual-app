@@ -5,7 +5,6 @@ import { RitualComponent } from './ritual/ritual.component';
 import { RitualAddComponent } from './ritual-add/ritual-add.component';
 import { HeaderService } from '../../services/header.service';
 import { DragDropModule, CdkDragDrop, moveItemInArray, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
-import { NgxPullToRefreshComponent } from 'ngx-pull-to-refresh';
 import { Subject } from 'rxjs';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
@@ -15,8 +14,7 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
     RitualComponent,
     RitualAddComponent,
     DragDropModule,
-    CdkDragPlaceholder,
-    NgxPullToRefreshComponent
+    CdkDragPlaceholder
   ],
   templateUrl: './ritual-list.component.html',
   styleUrl: './ritual-list.component.scss'
@@ -40,6 +38,7 @@ export class RitualListComponent {
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.rituals, event.previousIndex, event.currentIndex);
+    this.ritualService.updateSortOrder(this.rituals);
   }
 
   public swapped(): void {

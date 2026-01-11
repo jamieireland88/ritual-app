@@ -2,11 +2,19 @@
     width: 100%;
 }
 
+.calendar {
+    margin: 1rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
 .title-container {
     display: grid;
     text-align: center;
     align-items: center;
     grid-template-columns: repeat(3, 1fr);
+    color: var(--color-dark);
 }
 
 .mirrored {
@@ -30,4 +38,22 @@
             background: goldenrod;
         }
     }
+}
+
+.button-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+button.primary {
+    background: white;
+    color: var(--color-primary-dark);
+}
+
+button.secondary {
+    color: red;
+    background: rgba(red, 0.2);
+    border: 2px solid red;
 }

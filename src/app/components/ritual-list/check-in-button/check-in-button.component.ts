@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { CalendarComponent } from '../../calendar/calendar.component';
 import { Daily } from '../../../models/raw-models';
 import { HeaderService } from '../../../services/header.service';
+import { StatTileComponent } from '../../stat-tile/stat-tile.component';
 
 @Component({
   selector: 'app-check-in-button',
-  imports: [CalendarComponent],
+  imports: [CalendarComponent, StatTileComponent],
   templateUrl: './check-in-button.component.html',
   styleUrl: './check-in-button.component.scss',
 })
@@ -47,8 +48,6 @@ export class CheckInButtonComponent implements OnInit {
   }
 
   public async checkIn(): Promise<void> {
-    await this.ritualService.createCheckIn(this.id!).then(() => {
-      this.ngOnInit();
-    });
+
   }
 }

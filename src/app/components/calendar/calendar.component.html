@@ -1,16 +1,21 @@
-
-<div class="title-container">
-    <i class="left-arrow icon-play3 mirrored" (click)="switchMonth(-1)"></i>
-    <div>
-        <p>{{ selectedMonth | title }}</p>
-        <p>{{ selectedYear }}</p>
+<div class="calendar">
+    <div class="title-container">
+        <i class="left-arrow icon-play3 mirrored" (click)="switchMonth(-1)"></i>
+        <div>
+            <p>{{ selectedMonth | title }}</p>
+            <p>{{ selectedYear }}</p>
+        </div>
+        @if (!isCurrentMonth) {
+            <i class="right-arrow icon-play3" (click)="switchMonth(1)"></i>
+        }
     </div>
-    @if (!isCurrentMonth) {
-        <i class="right-arrow icon-play3" (click)="switchMonth(1)"></i>
-    }
+    <div class="calendar-container">
+        @for (day of [].constructor(daysInMonth); let index = $index; track index) {
+            <div class="calendar-day" [class.active]="checkInExists(index + 1)">{{ index + 1 }}</div>
+        }
+    </div>
 </div>
-<div class="calendar-container">
-    @for (day of [].constructor(daysInMonth); let index = $index; track index) {
-        <div class="calendar-day" [class.active]="checkInExists(index + 1)">{{ index + 1 }}</div>
-    }
+<div class="button-container">
+    <button class="secondary"><i class="icon-bin"></i></button>
+    <button class="primary"><i class="icon-pencil"></i></button>
 </div>

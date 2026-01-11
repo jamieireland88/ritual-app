@@ -1,5 +1,6 @@
 export enum RitualType {
     Daily = 'daily',
+    Weekly = 'weekly',
     Monthly = 'monthly'
 }
 

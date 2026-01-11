@@ -1,0 +1,31 @@
+.stat-tile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: var(--color-white);
+    border-radius: 1rem;
+    gap: 0.5rem;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-dark);
+    justify-content: space-around;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        i {
+            font-size: 1.5rem;
+            color: var(--color-primary-dark);
+            &.icon-fire {
+                color: orangered;
+            }
+        }
+    }
+
+    &__body {
+        margin: 0;
+    }
+}
