@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RitualService } from '../../../services/ritual.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarComponent } from '../../calendar/calendar.component';
 import { Daily } from '../../../models/raw-models';
 import { HeaderService } from '../../../services/header.service';
@@ -16,6 +16,7 @@ import { Ritual } from '../../../models/models';
 export class CheckInButtonComponent implements OnInit {
   private readonly ritualService = inject(RitualService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly headerService = inject(HeaderService);
 
   public ritual!: Ritual;
@@ -38,8 +39,6 @@ export class CheckInButtonComponent implements OnInit {
       return;
     }
 
-    console.log(this.ritual);
-
     this.headerService.setData({
       title: this.ritual.name,
       showBackButton: true,
@@ -49,5 +48,11 @@ export class CheckInButtonComponent implements OnInit {
 
   public async checkIn(): Promise<void> {
 
+  }
+
+  public async delete(): Promise<void> {
+    // TODO: add confirmation modal
+    await this.ritualService.deleteRitual(this.ritual.id);
+    this.router.navigate(['rituals']);
   }
 }

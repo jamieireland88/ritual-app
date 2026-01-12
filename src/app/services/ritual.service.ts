@@ -7,7 +7,7 @@ import {
   Firestore, addDoc, DocumentReference,
   serverTimestamp, where, query, Timestamp,
   orderBy,
-  updateDoc,
+  deleteDoc,
   doc, writeBatch,
   runTransaction
 } from "firebase/firestore";
@@ -163,6 +163,10 @@ export class RitualService {
         batch.update(itemRef, { sortOrder: index })
       });
       batch.commit();
+    }
+
+    public deleteRitual(ritualId: string): Promise<void> {
+      return deleteDoc(doc(this.db, "User", this.userId!, "rituals", ritualId))
     }
 
     public async login(username: string, password: string): Promise<void> {
