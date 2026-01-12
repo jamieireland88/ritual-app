@@ -9,6 +9,9 @@ export enum IconType {
     Pills = 'pills',
     Yoga = 'yoga',
     Weights = 'weights',
+    Cart = 'cart',
+    Football = 'football',
+    Swimming = 'swimming'
 }
 
 export type Ritual = {
