@@ -7,6 +7,7 @@ import {
   Validators
 } from '@angular/forms';
 import { RitualService } from '../../../services/ritual.service';
+import { IconType } from '../../../models/models';
 
 @Component({
   selector: 'app-ritual-add',
@@ -23,12 +24,15 @@ export class RitualAddComponent{
   @Output()
   public listChanged = new EventEmitter<void>();
 
+  protected iconList = Object.values(IconType);
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly ritualService: RitualService,
   ){
     this.addForm = this.formBuilder.group({
-      name: new FormControl('', Validators.required)
+      name: new FormControl('', Validators.required),
+      icon: new FormControl(''),
     })
   }
 
@@ -37,7 +41,8 @@ export class RitualAddComponent{
   }
 
   public async create(): Promise<void> {
-    await this.ritualService.createRitual(this.addForm.value.name).then(() => {
+    console.log(this.addForm.value.icon);
+    await this.ritualService.createRitual(this.addForm.value.name, this.addForm.value.icon).then(() => {
       this.listChanged.emit();
       this.closeDrawer();
     });

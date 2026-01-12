@@ -14,7 +14,7 @@ export enum IconType {
 export type Ritual = {
     id: string;
     name: string;
-    icon: IconType,
+    icon?: IconType,
     streak: number;
     remindTime: Date | null;
     created: Date | null;
