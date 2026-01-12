@@ -39,21 +39,3 @@
         }
     }
 }
-
-.button-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-    padding: 0.5rem;
-}
-
-button.primary {
-    background: white;
-    color: var(--color-primary-dark);
-}
-
-button.secondary {
-    color: red;
-    background: rgba(red, 0.2);
-    border: 2px solid red;
-}

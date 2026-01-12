@@ -1,7 +1,7 @@
 <div class="statistic-tiles">
-    <app-stat-tile title="Longest" [number]="23" unit="days" icon="icon-fire"></app-stat-tile>
-    <app-stat-tile title="Current" [number]="5" unit="days" icon="icon-fire"></app-stat-tile>
-    <app-stat-tile title="Completion" [number]="91" suffix="%" icon="icon-target"></app-stat-tile>
-    <app-stat-tile title="Total" [number]="97" unit="days" icon="icon-clock"></app-stat-tile>
+    <app-stat-tile title="Longest" [number]="ritual?.longestStreak || 0" unit="days" icon="icon-fire"></app-stat-tile>
+    <app-stat-tile title="Current" [number]="ritual?.streak || 0" unit="days" icon="icon-fire"></app-stat-tile>
+    <app-stat-tile title="Completion" [number]="ritual?.completion || 0" suffix="%" icon="icon-target"></app-stat-tile>
+    <app-stat-tile title="Total" [number]="ritual?.totalComplete || 0" unit="days" icon="icon-clock"></app-stat-tile>
 </div>
-<app-calendar [id]="id!" [daily]="daily"></app-calendar>
+<app-calendar [id]="id!"></app-calendar>

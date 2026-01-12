@@ -5,6 +5,7 @@ import { CalendarComponent } from '../../calendar/calendar.component';
 import { Daily } from '../../../models/raw-models';
 import { HeaderService } from '../../../services/header.service';
 import { StatTileComponent } from '../../stat-tile/stat-tile.component';
+import { Ritual } from '../../../models/models';
 
 @Component({
   selector: 'app-check-in-button',
@@ -17,7 +18,7 @@ export class CheckInButtonComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly headerService = inject(HeaderService);
 
-  public daily: Date | null = null;
+  public ritual!: Ritual;
 
   public isLoading: boolean = true;
 
@@ -27,21 +28,20 @@ export class CheckInButtonComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.name = this.route.snapshot.paramMap.get('name') || undefined;
-    const daily: Daily | null = await this.ritualService.getDailyCheckIn(this.id!);
-    this.daily = daily!.created;
-    this.isLoading = false;
-    // TODO: find a better way to do this that triggers dead on midnight
-    const interval = setInterval(() => {
-      const hour = new Date().getHours();
-      if (hour === 0) {
-        clearInterval(interval);
-        this.ngOnInit();
-      }
-    }, 60000);
+
+    // TODO: create get for individual ritual
+    const rituals = (await this.ritualService.getRituals()).filter((item) => item.id === this.id);
+    if (rituals.length) {
+      this.ritual = rituals[0];
+    }
+    if (!this.ritual) {
+      return;
+    }
+
+    console.log(this.ritual);
 
     this.headerService.setData({
-      title: decodeURI(this.name || ''),
+      title: this.ritual.name,
       showBackButton: true,
       showMenuButton: true,
     });

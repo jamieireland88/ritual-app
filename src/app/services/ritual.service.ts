@@ -8,7 +8,8 @@ import {
   serverTimestamp, where, query, Timestamp,
   orderBy,
   updateDoc,
-  doc, writeBatch
+  doc, writeBatch,
+  runTransaction
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import {
@@ -46,17 +47,23 @@ export class RitualService {
 
     public async getRituals(): Promise<Ritual[]> {
       const rituals: Ritual[] = [];
-      const q = query(collection(this.db, "User", this.userId!, "rituals"), orderBy('created'));
+      const q = query(collection(this.db, "User", this.userId!, "rituals"), orderBy('sortOrder'));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
+        const totalDays = this.calculateDays(doc.get('created').toDate(), new Date());
         rituals.push({
           id: doc.id,
           name: doc.get('name'),
-          streak: Math.floor(Math.random() * 100),
+          streak: doc.get('currentStreak') || 0,
+          longestStreak: doc.get('longestStreak') || 0,
           remindTime: Math.random() < 0.5 ? new Date() : null,
           created: doc.get('created'),
-          actioned: this.lastCheckinWasToday(doc.get('lastCheckin')),
-          type: Math.random() < 0.5 ? RitualType.Daily : RitualType.Monthly
+          actioned: this.lastCheckinWasToday(doc, doc.get('lastCheckin')),
+          type: RitualType.Daily,
+          totalComplete: doc.get('totalComplete') || 0,
+          lastCheckin: doc.get('lastCheckin'),
+          totalDays,
+          completion: (doc.get('totalComplete') || 0 / totalDays) * 100
         } as Ritual);
       });
       return Promise.resolve(rituals);
@@ -65,8 +72,11 @@ export class RitualService {
     public async createRitual(name: string): Promise<DocumentReference> {
       return addDoc(collection(this.db, "User", this.userId!, "rituals"), {
         name,
-        created: serverTimestamp(),
-        updated: serverTimestamp(),
+        longestStreak: 0,
+        currentStreak: 0,
+        sortOrder: 0,
+        created: new Date(),
+        updated: new Date(),
       });
     }
 
@@ -103,8 +113,20 @@ export class RitualService {
       return Promise.resolve(daily);
     }
 
-    public createCheckIn(ritualId: string): Promise<DocumentReference> {
-      updateDoc(doc(this.db, "User", this.userId!, "rituals", ritualId), { lastCheckin: new Date().toISOString() });
+    public async createCheckIn(ritualId: string): Promise<DocumentReference> {
+      // updateDoc(doc(this.db, "User", this.userId!, "rituals", ritualId), { lastCheckin: new Date().toISOString() });
+      await runTransaction(this.db, async (transaction) => {
+        const docRef = doc(this.db, "User", this.userId!, "rituals", ritualId);
+        const document = await transaction.get(docRef);
+        if (!document.exists()) {
+          throw "Document does not exist!";
+        }
+
+        const currentStreak = document.data()['streak'] || 0 + 1;
+        const longestStreak = document.data()['longestStreak'] || 0 + 1;
+        const totalComplete = document.data()['totalComplete'] || 0 + 1;
+        transaction.update(docRef, { currentStreak, longestStreak, totalComplete, lastCheckin: new Date().toISOString() });
+      });
       return addDoc(collection(this.db, "User", this.userId!, "rituals", ritualId, "checkins"), {
         created: serverTimestamp(),
       });
@@ -130,7 +152,12 @@ export class RitualService {
     }
 
     public updateSortOrder(rituals: Ritual[]) {
-      // writeBatch(this.db);
+      const batch = writeBatch(this.db);
+      rituals.forEach((item, index) => {
+        const itemRef = doc(this.db, "User", this.userId!, "rituals", item.id);
+        batch.update(itemRef, { sortOrder: index })
+      });
+      batch.commit();
     }
 
     public async login(username: string, password: string): Promise<void> {
@@ -147,7 +174,7 @@ export class RitualService {
       });
     }
 
-    private lastCheckinWasToday(checkin?: string): boolean {
+    private lastCheckinWasToday(doc: any, checkin?: string): boolean {
       if (!checkin) return false;
 
       const today = new Date();
@@ -162,4 +189,10 @@ export class RitualService {
       }
       return false;
     }
+
+    private calculateDays(startDate: Date, endDate: Date) {
+      const diff = endDate.getTime() - startDate.getTime();
+      let daysDifference = diff / (1000 * 3600 * 24);
+      return Math.ceil(daysDifference);
+  }
 }

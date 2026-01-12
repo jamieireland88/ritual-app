@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { TitlePipe } from '../../pipes/title.pipe';
 import { RitualService } from '../../services/ritual.service';
 
@@ -8,10 +8,8 @@ import { RitualService } from '../../services/ritual.service';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent implements OnInit, OnChanges {
+export class CalendarComponent implements OnInit {
   @Input() public id!: string;
-
-  @Input() public daily: Date | null = null;
 
   public language: string = navigator.language;
 
@@ -36,12 +34,6 @@ export class CalendarComponent implements OnInit, OnChanges {
 
   public ngOnInit(): void {
     this.setDate();
-  }
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    if ('daily' in changes && changes['daily'].firstChange === false) {
-      this.ngOnInit();
-    }
   }
 
   public async setDate(): Promise<void> {

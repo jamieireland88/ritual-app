@@ -13,6 +13,12 @@ export type Ritual = {
     sortOrder: number;
     actioned: boolean;
     type: RitualType;
+    currentStreak: number;
+    longestStreak: number;
+    completion: number;
+    totalComplete: number;
+    totalDays: number;
+    lastCheckin?: Date;
 }
 
 export type Profile = {
