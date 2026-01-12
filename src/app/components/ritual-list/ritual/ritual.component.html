@@ -9,7 +9,7 @@
         <div></div>
     </div>
     <div class="ritual__icon">
-        <img src="icon-colour.png" class="ritual__icon--image" alt="{{ ritual.name }}"/>
+        <img src="user-icons/{{ ritual.icon || 'icon-colour' }}.png" class="ritual__icon--image" alt="{{ ritual.name }}"/>
         <span class="ritual__icon--streak">
             {{ ritual.streak }}
             <i #fire class="icon-fire"></i>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Ritual, Profile, RitualType } from '../models/models';
+import { Ritual, Profile, RitualType, IconType } from '../models/models';
 import { Daily } from '../models/raw-models';
 import { environment } from '../../environment';
 import {
@@ -51,8 +51,11 @@ export class RitualService {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const totalDays = this.calculateDays(doc.get('created').toDate(), new Date());
+        const array = [IconType.Pills, IconType.Running, IconType.Weights, IconType.Yoga];
+        const icon = array[Math.floor(Math.random() * array.length)];
         rituals.push({
           id: doc.id,
+          icon,
           name: doc.get('name'),
           streak: doc.get('currentStreak') || 0,
           longestStreak: doc.get('longestStreak') || 0,

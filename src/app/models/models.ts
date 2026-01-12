@@ -4,9 +4,17 @@ export enum RitualType {
     Monthly = 'monthly'
 }
 
+export enum IconType {
+    Running = 'running',
+    Pills = 'pills',
+    Yoga = 'yoga',
+    Weights = 'weights',
+}
+
 export type Ritual = {
     id: string;
     name: string;
+    icon: IconType,
     streak: number;
     remindTime: Date | null;
     created: Date | null;
