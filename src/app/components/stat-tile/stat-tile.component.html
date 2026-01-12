@@ -4,7 +4,11 @@
         <span class="stat-tile__header--title">{{ title() }}</span>
     </div>
     <h3 class="stat-tile__body">
-        {{ number() }}{{ suffix() }}
+        @if (isPercent()) {
+            {{ number() | percent }}
+        } @else {
+            {{ number() }}
+        }
         <span class="stat-tile__body--unit">{{ unit() }}</span>
     </h3>
 </div>

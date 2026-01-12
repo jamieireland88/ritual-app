@@ -57,13 +57,13 @@ export class RitualService {
           streak: doc.get('currentStreak') || 0,
           longestStreak: doc.get('longestStreak') || 0,
           remindTime: Math.random() < 0.5 ? new Date() : null,
-          created: doc.get('created'),
-          actioned: this.lastCheckinWasToday(doc, doc.get('lastCheckin')),
+          created: (doc.get('created') as Timestamp).toDate(),
+          actioned: this.lastCheckinMatchesDate(doc.get('lastCheckin')),
           type: RitualType.Daily,
           totalComplete: doc.get('totalComplete') || 0,
           lastCheckin: doc.get('lastCheckin'),
           totalDays,
-          completion: (doc.get('totalComplete') || 0 / totalDays) * 100
+          completion: (doc.get('totalComplete') || 0) / totalDays
         } as Ritual);
       });
       return Promise.resolve(rituals);
@@ -122,8 +122,13 @@ export class RitualService {
           throw "Document does not exist!";
         }
 
-        const currentStreak = document.data()['streak'] || 0 + 1;
-        const longestStreak = document.data()['longestStreak'] || 0 + 1;
+        let currentStreak = 0;
+        let longestStreak = document.data()['longestStreak'];
+        const lastCheckin = document.data()['lastCheckin'];
+        if (this.lastCheckinMatchesDate(lastCheckin, this.yesterday)) {
+          currentStreak = document.data()['streak'] || 0 + 1;
+        }
+        longestStreak = Math.max(longestStreak + 1, currentStreak);
         const totalComplete = document.data()['totalComplete'] || 0 + 1;
         transaction.update(docRef, { currentStreak, longestStreak, totalComplete, lastCheckin: new Date().toISOString() });
       });
@@ -174,16 +179,19 @@ export class RitualService {
       });
     }
 
-    private lastCheckinWasToday(doc: any, checkin?: string): boolean {
-      if (!checkin) return false;
-
+    private get yesterday(): Date {
       const today = new Date();
+      return new Date(today.setDate(today.getDate() - 1));
+    }
+
+    private lastCheckinMatchesDate(checkin?: string, dateToMatch: Date = new Date()): boolean {
+      if (!checkin) return false;
         // Compare only the date components (year, month, day) of both today and checkin
       const checkinDate = new Date(checkin);
       if (
-        today.getFullYear() === checkinDate.getFullYear() &&
-        today.getMonth() === checkinDate.getMonth() &&
-        today.getDate() === checkinDate.getDate()
+        dateToMatch.getFullYear() === checkinDate.getFullYear() &&
+        dateToMatch.getMonth() === checkinDate.getMonth() &&
+        dateToMatch.getDate() === checkinDate.getDate()
       ) {
         return true;
       }
