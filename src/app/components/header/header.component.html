@@ -3,7 +3,10 @@
     <i class="icon-play3" (click)="location.back()"></i>
     }
 </div>
-<h1 id="appTitle" (click)="home()" [class.small]="headerData().smallTitle">{{headerData().title || 'Ritual'}}</h1>
+<h1 id="appTitle" (click)="home()" [class.small]="headerData().smallTitle">
+    {{headerData().title || 'Ritual'}}
+    <i class="icon-pencil"></i>
+</h1>
 <div id="appMenu">
     @if (headerData().showMenuButton) {
     <div class="menu-icon">

@@ -4,7 +4,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 1s forwards;
 }
 
 .ritual-add-drawer {
@@ -17,14 +18,48 @@
     width: 100%;
     padding: 2rem;
     border-radius: 1rem 1rem 0 0;
-    background: var(--color-primary-dark);
+    background: var(--color-white);
     i {
         margin-left: auto;
         margin-bottom: 1rem;
+        color: var(--color-dark);
     }
     form {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
         button {
             width: 100%;
+            margin-top: auto;
+            margin-bottom: env(safe-area-inset-bottom, 0);
         }
+        input {
+            border: 1px solid var(--color-dark);
+        }
+    }
+    animation: slideIn 0.3s forwards;
+}
+
+.enter-animation {
+    animation: slideIn 0.3s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: none;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
