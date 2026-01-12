@@ -3,12 +3,7 @@
         <i class="icon-cross" (click)="closeDrawer()"></i>
         <form [formGroup]="addForm">
             <input type="text" placeholder='Name your Ritual'  formControlName="name" autocomplete="off"/>
-            <select formControlName="icon">
-                <option value="" disabled>Select an icon</option>
-                @for (icon of iconList; track icon) {
-                    <option value="{{ icon }}">{{ icon }}</option>
-                }
-            </select>
+            <app-icon-selector formControlName="icon"></app-icon-selector>
             <button type="submit" (click)="create()" [disabled]="!addForm.valid">Begin</button>
         </form>
     </div>

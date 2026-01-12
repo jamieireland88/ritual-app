@@ -1,0 +1,14 @@
+<div class="icon-selector-drawer">
+    <div class="icon-selector-drawer__header">
+        <i class="icon-cross" (click)="close()"></i>
+    </div>
+    @defer (on timer(300ms)) {
+        <div class="icon-selector-drawer__icon-grid">
+            @for (icon of iconOptions; track icon) {
+                <div class="icon-selector-drawer__icon" [class.selected]="selected === icon" (click)="handleSelection(icon)">
+                    <img src="user-icons/{{ icon }}.png">
+                </div>
+            }
+        </div>
+    }
+</div>

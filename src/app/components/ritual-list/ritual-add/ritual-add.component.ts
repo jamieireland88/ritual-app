@@ -8,10 +8,11 @@ import {
 } from '@angular/forms';
 import { RitualService } from '../../../services/ritual.service';
 import { IconType } from '../../../models/models';
+import { IconSelectorComponent } from "../../icon-selector/icon-selector.component";
 
 @Component({
   selector: 'app-ritual-add',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, IconSelectorComponent],
   templateUrl: './ritual-add.component.html',
   styleUrl: './ritual-add.component.scss'
 })
@@ -32,7 +33,7 @@ export class RitualAddComponent{
   ){
     this.addForm = this.formBuilder.group({
       name: new FormControl('', Validators.required),
-      icon: new FormControl(''),
+      icon: new FormControl<IconType | null>(null),
     })
   }
 
@@ -41,7 +42,6 @@ export class RitualAddComponent{
   }
 
   public async create(): Promise<void> {
-    console.log(this.addForm.value.icon);
     await this.ritualService.createRitual(this.addForm.value.name, this.addForm.value.icon).then(() => {
       this.listChanged.emit();
       this.closeDrawer();
