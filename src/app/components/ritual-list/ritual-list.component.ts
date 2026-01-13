@@ -5,8 +5,9 @@ import { RitualComponent } from './ritual/ritual.component';
 import { RitualAddComponent } from './ritual-add/ritual-add.component';
 import { HeaderService } from '../../services/header.service';
 import { DragDropModule, CdkDragDrop, moveItemInArray, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
-import { Subject } from 'rxjs';
+import { Subject, take } from 'rxjs';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Dialog } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-ritual-list',
@@ -28,11 +29,13 @@ export class RitualListComponent {
 
   private readonly headerService = inject(HeaderService);
 
+  private readonly dialog = inject(Dialog);
+
   constructor(){
     this.loadData();
     this.headerService.setData({
       title: 'My Rituals',
-      showMenuButton: true,
+      smallTitle: true,
     })
   }
 
@@ -50,8 +53,9 @@ export class RitualListComponent {
     event?.next();
   }
 
-  public toggleDrawer() {
-    this.drawerIsOpen = !this.drawerIsOpen;
+  public openDrawer() {
+    const dialogRef = this.dialog.open(RitualAddComponent);
+    dialogRef.closed.pipe(take(1)).subscribe(() => this.listChanged());
   }
 
   private async getRituals(): Promise<void> {

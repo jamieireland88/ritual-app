@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output, output } from '@angular/core';
 import { Ritual, Profile, RitualType, IconType } from '../models/models';
 import { Daily } from '../models/raw-models';
 import { environment } from '../../environment';
@@ -9,7 +9,8 @@ import {
   orderBy,
   deleteDoc,
   doc, writeBatch,
-  runTransaction
+  runTransaction,
+  updateDoc
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import {
@@ -22,6 +23,8 @@ import { GoogleAuthProvider } from "firebase/auth";
   providedIn: 'root'
 })
 export class RitualService {
+    @Output() ritualUpdated = new EventEmitter();
+
     public get userId(): string | null {
       return this.auth.currentUser?.uid || localStorage.getItem('userId');
     }
@@ -82,6 +85,14 @@ export class RitualService {
         created: new Date(),
         updated: new Date(),
       });
+    }
+
+    public async updateRitual(ritualId: string, name: string, icon?: string, ): Promise<void> {
+      return updateDoc(doc(this.db, "User", this.userId!, "rituals", ritualId), {
+        name,
+        icon,
+        updated: new Date(),
+      }).finally(() => this.ritualUpdated.emit())
     }
 
     public async getProfile(): Promise<Profile | null> {

@@ -1,13 +1,17 @@
 @defer(on timer(300ms)) {
     <div class="ritual-add-drawer">
         <div class="ritual-add-drawer__header">
-            <span>My new Ritual is...</span>
+            @if (ritual) {
+                <span>Change my Ritual...</span>
+            } @else {
+                <span>My new Ritual is...</span>
+            }
             <i class="icon-cross" (click)="closeDrawer()"></i>
         </div>
         <form [formGroup]="addForm">
             <app-icon-selector formControlName="icon"></app-icon-selector>
             <input type="text" placeholder='Name your Ritual'  formControlName="name" autocomplete="off"/>
-            <button type="submit" (click)="create()" [disabled]="!addForm.valid">Begin</button>
+            <button type="submit" (click)="submit()" [disabled]="!addForm.valid">{{ ritual ? 'Update' : 'Begin' }}</button>
         </form>
     </div>
 }

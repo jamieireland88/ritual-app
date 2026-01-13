@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RitualService } from '../../../services/ritual.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarComponent } from '../../calendar/calendar.component';
@@ -6,6 +6,7 @@ import { Daily } from '../../../models/raw-models';
 import { HeaderService } from '../../../services/header.service';
 import { StatTileComponent } from '../../stat-tile/stat-tile.component';
 import { Ritual } from '../../../models/models';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-check-in-button',
@@ -13,7 +14,7 @@ import { Ritual } from '../../../models/models';
   templateUrl: './check-in-button.component.html',
   styleUrl: './check-in-button.component.scss',
 })
-export class CheckInButtonComponent implements OnInit {
+export class CheckInButtonComponent implements OnInit, OnDestroy {
   private readonly ritualService = inject(RitualService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -26,6 +27,8 @@ export class CheckInButtonComponent implements OnInit {
   public id: string | null = null;
 
   public name?: string;
+
+  private destroy$ = new Subject<void>;
 
   public async ngOnInit(): Promise<void> {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -43,16 +46,16 @@ export class CheckInButtonComponent implements OnInit {
       title: this.ritual.name,
       showBackButton: true,
       showMenuButton: true,
+      ritual: this.ritual,
+    });
+
+    this.ritualService.ritualUpdated.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.ngOnInit();
     });
   }
 
-  public async checkIn(): Promise<void> {
-
-  }
-
-  public async delete(): Promise<void> {
-    // TODO: add confirmation modal
-    await this.ritualService.deleteRitual(this.ritual.id);
-    this.router.navigate(['rituals']);
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

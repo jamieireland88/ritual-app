@@ -1,0 +1,12 @@
+@defer (on timer(300ms)) {
+    <div class="action-sheet">
+        <div class="action-sheet__item" (click)="handleAction('edit')">
+            <i class="icon-pencil"></i>
+            <span>Edit</span>
+        </div>
+        <div class="action-sheet__item" (click)="handleAction('delete')">
+            <i class="icon-bin"></i>
+            <span>Delete</span>
+        </div>
+    </div>
+}

@@ -1,10 +1,12 @@
 import { computed, Injectable, signal, WritableSignal } from '@angular/core';
+import { Ritual } from '../models/models';
 
 export interface HeaderData {
   title?: string;
   showBackButton?: boolean;
   showMenuButton?: boolean;
   smallTitle?: boolean;
+  ritual?: Ritual
 }
 
 @Injectable({

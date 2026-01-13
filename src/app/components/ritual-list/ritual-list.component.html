@@ -5,14 +5,7 @@
             <app-ritual [ritual]="ritual"></app-ritual>
         </div>
     }
-    <div class="ritual-add-tile" (click)="toggleDrawer()">
+    <div class="ritual-add-tile" (click)="openDrawer()">
         <i class="icon-plus"></i>
         <span>Add new Ritual</span>
 </div>
-
-@if (drawerIsOpen) {
-    <app-ritual-add
-    (toggleDrawer)="toggleDrawer()"
-    (listChanged)="listChanged()"
-    ></app-ritual-add>
-}

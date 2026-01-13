@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -9,6 +9,7 @@ import {
 import { RitualService } from '../../../services/ritual.service';
 import { IconType } from '../../../models/models';
 import { IconSelectorComponent } from "../../icon-selector/icon-selector.component";
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-ritual-add',
@@ -20,31 +21,39 @@ export class RitualAddComponent{
   public addForm: FormGroup;
 
   @Output()
-  public toggleDrawer = new EventEmitter<void>();
-
-  @Output()
   public listChanged = new EventEmitter<void>();
 
   protected iconList = Object.values(IconType);
+  protected readonly ritual = inject(DIALOG_DATA)?.ritual;
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private readonly ritualService: RitualService,
-  ){
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ritualService = inject(RitualService);
+  private readonly dialogRef = inject(DialogRef);
+
+  constructor() {
     this.addForm = this.formBuilder.group({
-      name: new FormControl('', Validators.required),
-      icon: new FormControl<IconType | null>(null),
+      name: new FormControl(this.ritual?.name || '', Validators.required),
+      icon: new FormControl<IconType | null>(this.ritual?.icon || null),
     })
   }
 
   public closeDrawer(): void {
-    this.toggleDrawer.emit();
+    this.dialogRef.close();
   }
 
-  public async create(): Promise<void> {
-    await this.ritualService.createRitual(this.addForm.value.name, this.addForm.value.icon).then(() => {
-      this.listChanged.emit();
-      this.closeDrawer();
-    });
+  public async submit(): Promise<void> {
+    const { name, icon } = this.addForm.value;
+
+    if (!this.ritual) {
+      await this.ritualService.createRitual(name, icon).then(() => {
+        this.listChanged.emit();
+        this.closeDrawer();
+      });
+    } else {
+      await this.ritualService.updateRitual(this.ritual.id, name, icon).then(() => {
+        this.listChanged.emit();
+        this.closeDrawer();
+      });
+    }
   }
 }
