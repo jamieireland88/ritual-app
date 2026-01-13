@@ -129,12 +129,11 @@ export class RitualService {
         let currentStreak = 0;
         let longestStreak = document.data()['longestStreak'];
         const lastCheckin = document.data()['lastCheckin'];
-        console.log(lastCheckin);
-        if (!lastCheckin || this.lastCheckinMatchesDate(lastCheckin, this.yesterday)) {
-          currentStreak = document.data()['streak'] || 0 + 1;
+        if (!lastCheckin || this.lastCheckinMatchesDate(lastCheckin.toDate(), this.yesterday)) {
+          currentStreak = (document.data()['currentStreak'] || 0) + 1;
         }
         longestStreak = Math.max(longestStreak + 1, currentStreak);
-        const totalComplete = document.data()['totalComplete'] || 0 + 1;
+        const totalComplete = (document.data()['totalComplete'] || 0) + 1;
         transaction.update(docRef, { currentStreak, longestStreak, totalComplete, lastCheckin: new Date() });
       });
       return addDoc(collection(this.db, "User", this.userId!, "rituals", ritualId, "checkins"), {
