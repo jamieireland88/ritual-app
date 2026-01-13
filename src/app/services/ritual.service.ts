@@ -207,7 +207,10 @@ export class RitualService {
 
     private calculateDays(startDate: Date, endDate: Date) {
       const diff = endDate.getTime() - startDate.getTime();
-      let daysDifference = diff / (1000 * 3600 * 24);
+      if (this.lastCheckinMatchesDate(startDate, endDate)) {
+        return 1;
+      }
+      let daysDifference = diff / (1000 * 3600 * 24) + 1;
       return Math.ceil(daysDifference);
   }
 }
