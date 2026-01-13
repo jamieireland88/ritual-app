@@ -38,6 +38,11 @@
         }
     }
     animation: slideIn 0.3s forwards;
+
+    &__header {
+        display: flex;
+        color: var(--color-dark);
+    }
 }
 
 .enter-animation {

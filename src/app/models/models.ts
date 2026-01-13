@@ -11,7 +11,13 @@ export enum IconType {
     Weights = 'weights',
     Cart = 'cart',
     Football = 'football',
-    Swimming = 'swimming'
+    Swimming = 'swimming',
+    Document = 'document',
+    Car = 'car',
+    Diary = 'diary',
+    Steps = 'steps',
+    Bulb = 'bulb'
+
 }
 
 export type Ritual = {

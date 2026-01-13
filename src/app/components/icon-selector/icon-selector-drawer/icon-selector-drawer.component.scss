@@ -39,8 +39,16 @@
         align-items: center;
         justify-content: center;
         animation: scaleIn 0.5s forwards;
+        padding: 0.5rem;
         &.selected {
             outline: 2px solid var(--color-dark);
+        }
+        transform: scale(0);
+
+        @for $i from 1 through 99 {
+            &:nth-child(#{$i}) {
+                animation-delay: calc(0.03s * #{$i});
+            }
         }
     }
 
