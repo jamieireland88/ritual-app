@@ -2,22 +2,21 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RitualService } from '../../../services/ritual.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarComponent } from '../../calendar/calendar.component';
-import { Daily } from '../../../models/raw-models';
 import { HeaderService } from '../../../services/header.service';
 import { StatTileComponent } from '../../stat-tile/stat-tile.component';
 import { Ritual } from '../../../models/models';
 import { Subject, takeUntil } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-check-in-button',
-  imports: [CalendarComponent, StatTileComponent],
+  imports: [CalendarComponent, StatTileComponent, TranslatePipe],
   templateUrl: './check-in-button.component.html',
   styleUrl: './check-in-button.component.scss',
 })
 export class CheckInButtonComponent implements OnInit, OnDestroy {
   private readonly ritualService = inject(RitualService);
   private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   private readonly headerService = inject(HeaderService);
 
   public ritual!: Ritual;

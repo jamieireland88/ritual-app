@@ -1,5 +1,6 @@
-import { computed, Injectable, signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { Ritual } from '../models/models';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface HeaderData {
   title?: string;
@@ -15,11 +16,13 @@ export interface HeaderData {
 export class HeaderService {
   private data: WritableSignal<HeaderData> = signal({});
 
+  private translateService = inject(TranslateService)
+
   public getData = computed(() => {
     return {
       ...this.data(),
     ...(this.data().showBackButton || this.data().showMenuButton ? { smallTitle: true } : {}),
-    ...(!this.data().title ? { title: 'Ritual' } : { title: this.data().title }),
+    ...(!this.data().title ? { title: this.translateService.instant('common.ritual') } : { title: this.data().title }),
     }
   });
 

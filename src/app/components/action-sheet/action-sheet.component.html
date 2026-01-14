@@ -2,11 +2,11 @@
     <div class="action-sheet">
         <div class="action-sheet__item" (click)="handleAction('edit')">
             <i class="icon-pencil"></i>
-            <span>Edit</span>
+            <span>{{ 'common.edit' | translate }}</span>
         </div>
         <div class="action-sheet__item" (click)="handleAction('delete')">
             <i class="icon-bin"></i>
-            <span>Delete</span>
+            <span>{{ 'common.delete' | translate }}</span>
         </div>
     </div>
 }

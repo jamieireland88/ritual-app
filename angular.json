@@ -29,6 +29,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "assets/i18n",
+                "output": "assets/i18n"
               }
             ],
             "styles": [
@@ -95,6 +100,11 @@
                 "glob": "**/*",
                 "input": "public",
                 "output": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "assets/i18n",
+                "output": "assets/i18n"
               }
             ],
             "styles": [

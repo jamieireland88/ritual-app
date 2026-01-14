@@ -11,10 +11,16 @@ import { IconType, RitualType } from '../../../models/models';
 import { IconSelectorComponent } from "../../icon-selector/icon-selector.component";
 import { TypeSelectorComponent } from "../../type-selector/type-selector.component";
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ritual-add',
-  imports: [ReactiveFormsModule, IconSelectorComponent, TypeSelectorComponent],
+  imports: [
+    ReactiveFormsModule,
+    IconSelectorComponent,
+    TypeSelectorComponent,
+    TranslatePipe
+  ],
   templateUrl: './ritual-add.component.html',
   styleUrl: './ritual-add.component.scss'
 })

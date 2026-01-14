@@ -4,11 +4,13 @@ import { RitualService } from '../../services/ritual.service';
 import { Ritual } from '../../models/models';
 import { RitualAddComponent } from '../ritual-list/ritual-add/ritual-add.component';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-action-sheet',
   templateUrl: './action-sheet.component.html',
-  styleUrl: './action-sheet.component.scss'
+  styleUrl: './action-sheet.component.scss',
+  imports: [TranslatePipe]
 })
 export class ActionSheetComponent {
   private dialogRef = inject(DialogRef);

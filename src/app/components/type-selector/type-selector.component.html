@@ -1,8 +1,8 @@
 <div class="type-selector">
     <div class="type-selector__container">
-    <div class="type-selector__selection" [class.selected]="type() === RitualType.Daily" (click)="type.set(RitualType.Daily)">Daily</div>
-    <div class="type-selector__selection" [class.selected]="type() === RitualType.Weekly" (click)="type.set(RitualType.Weekly)">Weekly</div>
-    <div class="type-selector__selection" [class.selected]="type() === RitualType.Monthly" (click)="type.set(RitualType.Monthly)">Monthly</div>
+    <div class="type-selector__selection" [class.selected]="type() === RitualType.Daily" (click)="type.set(RitualType.Daily)">{{ 'type.daily' | translate }}</div>
+    <div class="type-selector__selection" [class.selected]="type() === RitualType.Weekly" (click)="type.set(RitualType.Weekly)">{{ 'type.weekly' | translate }}</div>
+    <div class="type-selector__selection" [class.selected]="type() === RitualType.Monthly" (click)="type.set(RitualType.Monthly)">{{ 'type.monthly' | translate }}</div>
     </div>
     <span class="type-selector__helptext">{{ helptext() }}</span>
 </div>

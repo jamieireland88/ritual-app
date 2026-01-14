@@ -18,7 +18,7 @@
     <div class="ritual__info">
         <p class="ritual__name">{{ ritual.name }}</p>
         <p class="ritual__subtitle c--light">
-            <span>{{ ritual.type === RitualType.Daily ? 'Daily' : 'Monthly' }}</span>
+            <span>{{ type() }}</span>
             @if (ritual.remindTime) {
                 <i class="icon-alarm"></i>
             }

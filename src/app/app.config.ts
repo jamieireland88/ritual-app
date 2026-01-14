@@ -1,8 +1,14 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './interceptors';
+import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateHttpLoader, TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function httpTranslateLoader(): unknown {
+  return new TranslateHttpLoader();
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,5 +17,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([tokenInterceptor])
     ),
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        loader: provideTranslateHttpLoader({prefix:"./assets/i18n/", suffix:".json"}),
+      })
+    )
   ]
 };

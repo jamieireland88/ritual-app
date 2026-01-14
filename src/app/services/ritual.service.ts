@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, Output, output } from '@angular/core';
+import { EventEmitter, inject, Injectable, Output, output } from '@angular/core';
 import { Ritual, Profile, RitualType, IconType } from '../models/models';
 import { Daily } from '../models/raw-models';
 import { environment } from '../../environment';
@@ -18,6 +18,7 @@ import {
 } from "firebase/auth";
 import { Router } from '@angular/router';
 import { GoogleAuthProvider } from "firebase/auth";
+import { DateTime, Interval } from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -219,11 +220,9 @@ export class RitualService {
     }
 
     private calculateDays(startDate: Date, endDate: Date) {
-      const diff = endDate.getTime() - startDate.getTime();
-      if (this.lastCheckinMatchesDate(startDate, endDate)) {
-        return 1;
-      }
-      let daysDifference = diff / (1000 * 3600 * 24) + 1;
-      return Math.ceil(daysDifference);
+      const start = DateTime.fromJSDate(startDate).startOf('day');
+      const end = DateTime.fromJSDate(endDate).endOf('day');
+      const diff = Interval.fromDateTimes(start, end).length('hours');
+      return Math.ceil(diff / 24);
   }
 }

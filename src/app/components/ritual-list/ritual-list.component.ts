@@ -8,14 +8,15 @@ import { DragDropModule, CdkDragDrop, moveItemInArray, CdkDragPlaceholder } from
 import { Subject, take } from 'rxjs';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Dialog } from '@angular/cdk/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ritual-list',
   imports: [
     RitualComponent,
-    RitualAddComponent,
     DragDropModule,
-    CdkDragPlaceholder
+    CdkDragPlaceholder,
+    TranslatePipe
   ],
   templateUrl: './ritual-list.component.html',
   styleUrl: './ritual-list.component.scss'
@@ -29,12 +30,14 @@ export class RitualListComponent {
 
   private readonly headerService = inject(HeaderService);
 
+  private readonly translateService = inject(TranslateService);
+
   private readonly dialog = inject(Dialog);
 
   constructor(){
     this.loadData();
     this.headerService.setData({
-      title: 'My Rituals',
+      title: this.translateService.instant('list.my-rituals'),
       smallTitle: true,
     })
   }

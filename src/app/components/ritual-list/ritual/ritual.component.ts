@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { Ritual, RitualType } from '../../../models/models';
 import { Router } from '@angular/router';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { gsap } from 'gsap';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { RitualService } from '../../../services/ritual.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ritual',
@@ -20,6 +21,12 @@ export class RitualComponent {
   @Input() public ritual!: Ritual;
 
   protected RitualType = RitualType;
+
+  protected translateService = inject(TranslateService);
+
+  protected type = computed(() => {
+    return this.translateService.instant(`type.${this.ritual.type}`);
+  });
 
   private readonly router = inject(Router);
 
