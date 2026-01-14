@@ -82,6 +82,7 @@ export class RitualComponent {
 
   public onSwipeLeft(): void {
     gsap.to(this.ritualEle.nativeElement, {transform: 'translateX(-100%)', duration: 0.1});
-    this.ritualService.deleteRitual(this.ritual.id).finally(() => this.ritualDeleted.emit())
+    this.ritualService.deleteRitual(this.ritual.id).finally(() => this.ritualDeleted.emit());
+    Haptics.impact({ style: ImpactStyle.Heavy });
   }
 }
