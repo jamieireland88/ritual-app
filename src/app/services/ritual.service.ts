@@ -65,7 +65,7 @@ export class RitualService {
           actioned: this.lastCheckinMatchesDate(
             doc.get('lastCheckin') ? (doc.get('lastCheckin') as Timestamp).toDate() : undefined
           ),
-          type: RitualType.Daily,
+          type: doc.get('type') || RitualType.Daily,
           totalComplete: doc.get('totalComplete') || 0,
           lastCheckin: doc.get('lastCheckin') ? (doc.get('lastCheckin') as Timestamp).toDate() : undefined,
           totalDays,
@@ -75,10 +75,11 @@ export class RitualService {
       return Promise.resolve(rituals);
     }
 
-    public async createRitual(name: string, icon?: string): Promise<DocumentReference> {
+    public async createRitual(name: string, type: RitualType, icon?: string): Promise<DocumentReference> {
       return addDoc(collection(this.db, "User", this.userId!, "rituals"), {
         name,
         icon,
+        type,
         longestStreak: 0,
         currentStreak: 0,
         sortOrder: 0,
@@ -87,10 +88,11 @@ export class RitualService {
       });
     }
 
-    public async updateRitual(ritualId: string, name: string, icon?: string, ): Promise<void> {
+    public async updateRitual(ritualId: string, name: string, type: RitualType, icon?: string): Promise<void> {
       return updateDoc(doc(this.db, "User", this.userId!, "rituals", ritualId), {
         name,
         icon,
+        type,
         updated: new Date(),
       }).finally(() => this.ritualUpdated.emit())
     }

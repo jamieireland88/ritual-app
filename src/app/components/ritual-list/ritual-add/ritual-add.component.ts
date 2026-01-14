@@ -7,13 +7,14 @@ import {
   Validators
 } from '@angular/forms';
 import { RitualService } from '../../../services/ritual.service';
-import { IconType } from '../../../models/models';
+import { IconType, RitualType } from '../../../models/models';
 import { IconSelectorComponent } from "../../icon-selector/icon-selector.component";
+import { TypeSelectorComponent } from "../../type-selector/type-selector.component";
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-ritual-add',
-  imports: [ReactiveFormsModule, IconSelectorComponent],
+  imports: [ReactiveFormsModule, IconSelectorComponent, TypeSelectorComponent],
   templateUrl: './ritual-add.component.html',
   styleUrl: './ritual-add.component.scss'
 })
@@ -34,6 +35,7 @@ export class RitualAddComponent{
     this.addForm = this.formBuilder.group({
       name: new FormControl(this.ritual?.name || '', Validators.required),
       icon: new FormControl<IconType | null>(this.ritual?.icon || null),
+      type: new FormControl<RitualType>(this.ritual?.type || RitualType.Daily),
     })
   }
 
@@ -42,15 +44,15 @@ export class RitualAddComponent{
   }
 
   public async submit(): Promise<void> {
-    const { name, icon } = this.addForm.value;
+    const { name, icon, type } = this.addForm.value;
 
     if (!this.ritual) {
-      await this.ritualService.createRitual(name, icon).then(() => {
+      await this.ritualService.createRitual(name, type, icon).then(() => {
         this.listChanged.emit();
         this.closeDrawer();
       });
     } else {
-      await this.ritualService.updateRitual(this.ritual.id, name, icon).then(() => {
+      await this.ritualService.updateRitual(this.ritual.id, name, type, icon).then(() => {
         this.listChanged.emit();
         this.closeDrawer();
       });

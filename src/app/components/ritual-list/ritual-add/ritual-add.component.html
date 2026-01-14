@@ -11,6 +11,7 @@
         <form [formGroup]="addForm">
             <app-icon-selector formControlName="icon"></app-icon-selector>
             <input type="text" placeholder='Name your Ritual'  formControlName="name" autocomplete="off"/>
+            <app-type-selector formControlName="type" ></app-type-selector>
             <button type="submit" (click)="submit()" [disabled]="!addForm.valid">{{ ritual ? 'Update' : 'Begin' }}</button>
         </form>
     </div>
