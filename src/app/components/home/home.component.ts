@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RitualService } from '../../services/ritual.service';
 import { HeaderService } from '../../services/header.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { SocialLogin } from '@capgo/capacitor-social-login';
+import { environment } from '../../../environment';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   public loginForm: FormGroup;
 
   private readonly ritualService = inject(RitualService);
@@ -27,11 +29,25 @@ export class HomeComponent {
     this.headerService.resetData();
   }
 
-  public login(): void {
-    this.ritualService.login(
-      this.loginForm.value.email,
-      this.loginForm.value.password,
-    );
+  public async ngOnInit(): Promise<void> {
+    await SocialLogin.initialize({
+      apple: {
+        clientId: environment.appleClientId
+      }
+    })
+  }
+
+  public async login(): Promise<void> {
+    const res = await SocialLogin.login({
+      provider: 'apple',
+      options: {
+        scopes: ['email', 'name'],
+      },
+    });
+    // this.ritualService.login(
+    //   this.loginForm.value.email,
+    //   this.loginForm.value.password,
+    // );
   }
 
   public loginWithGoogle(): void {
