@@ -1,8 +1,8 @@
 <div class="rituals-list" cdkDropList cdkScrollable (cdkDropListSorted)="swapped()" (cdkDropListDropped)="drop($event)">
-    @for (ritual of rituals; track ritual.id; let last=$last) {
+    @for (ritual of rituals; track ritual.id) {
         <div cdkDrag>
             <div class="drag-drop-placeholder" *cdkDragPlaceholder></div>
-            <app-ritual [ritual]="ritual"></app-ritual>
+            <app-ritual [ritual]="ritual" (ritualDeleted)="listChanged()"></app-ritual>
         </div>
     }
     <div class="ritual-add-tile" (click)="openDrawer()">

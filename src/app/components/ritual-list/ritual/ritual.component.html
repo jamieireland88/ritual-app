@@ -1,5 +1,5 @@
-<div #ritualEle class="ritual" (click)="view()">
-    <div cdkDragHandle class="ritual__handle--area"></div>
+<div #ritualEle class="ritual" (click)="view()" (swiperight)="onSwipeRight()" (swipeleft)="onSwipeLeft()">
+    <div cdkDragHandle class="ritual__handle--area" (click)="$event.preventDefault(); $event.stopImmediatePropagation();"></div>
     <div class="ritual__handle">
         <div></div>
         <div></div>
