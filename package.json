@@ -24,7 +24,6 @@
     "@capacitor/core": "^8.0.0",
     "@capacitor/haptics": "^8.0.0",
     "@capacitor/ios": "^8.0.0",
-    "@capgo/capacitor-persistent-account": "^8.0.8",
     "@firebase/auth": "^1.8.1",
     "@firebase/firestore": "^1.14.1",
     "@ngx-translate/core": "^17.0.0",
