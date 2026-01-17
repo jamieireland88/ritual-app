@@ -4,14 +4,11 @@ PODS:
   - CapacitorCordova (8.0.1)
   - CapacitorHaptics (8.0.0):
     - Capacitor
-  - CapgoCapacitorPersistentAccount (8.0.8):
-    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
-  - "CapgoCapacitorPersistentAccount (from `../../node_modules/@capgo/capacitor-persistent-account`)"
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -20,15 +17,12 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorHaptics:
     :path: "../../node_modules/@capacitor/haptics"
-  CapgoCapacitorPersistentAccount:
-    :path: "../../node_modules/@capgo/capacitor-persistent-account"
 
 SPEC CHECKSUMS:
   Capacitor: 2d8b1a05870ddb600b0e1e32b83fcf0890c244e1
   CapacitorCordova: 0d65b9bb74e995dcecb9463f34f1af2aba6f955c
   CapacitorHaptics: 7a77ce744c4b516b3ffd7f8c96d3de574d77b898
-  CapgoCapacitorPersistentAccount: 47ac5084974ad6786875a74d29d177a75fc6e784
 
-PODFILE CHECKSUM: a25a149818d4533903cb055a658b12f82bbbd62a
+PODFILE CHECKSUM: 46c4b6016d375eef4ed2bd0ec06ac02872b3f619
 
 COCOAPODS: 1.16.2
