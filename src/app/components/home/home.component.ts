@@ -30,13 +30,12 @@ export class HomeComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await SocialLogin.initialize({
       google: {
-        webClientId: '264927648797-l56u7ut9ihdvj7qkdr4qur2i84avgibl.apps.googleusercontent.com',        // Required for Android and Web
-        iOSClientId: 'YOUR_IOS_CLIENT_ID',        // Required for iOS
-        iOSServerClientId: 'YOUR_WEB_CLIENT_ID',  // Required for iOS offline mode and server authorization (same as webClientId)
-        mode: 'online',  // 'online' or 'offline'
+        webClientId: '264927648797-l56u7ut9ihdvj7qkdr4qur2i84avgibl.apps.googleusercontent.com',
+        iOSClientId: '264927648797-25rqaobvmfknf43ggkudueiv2h9lo2pi.apps.googleusercontent.com',
+        mode: 'online'
       },
       apple: {
-        clientId: 'com.owlsnake-studios.ritual-services'
+        clientId: 'com.owlsnake-studios.ritual'
       }
     });
 
