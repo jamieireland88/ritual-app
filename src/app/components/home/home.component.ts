@@ -39,6 +39,16 @@ export class HomeComponent implements OnInit {
         clientId: 'com.owlsnake-studios.ritual-services'
       }
     });
+
+    const status = await SocialLogin.isLoggedIn({
+      provider: 'google'
+    });
+    if (status.isLoggedIn) {
+      const code = await SocialLogin.getAuthorizationCode({
+        provider: 'google',
+      });
+      this.ritualService.loginWithCredential('google.com', code.jwt || '', code.accessToken || '')
+    }
   }
 
   public async login(): Promise<void> {
