@@ -24,17 +24,14 @@ p {
 }
 
 .social-buttons {
+    display: flex;
+    gap: 1rem;
     margin-top: auto;
-    .gsi-material-button-content-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+    button {
         background: white;
-        padding: 0.5rem 1rem;
-        color: black;
-        border-radius: 50px;
-        .gsi-material-button-icon {
-            width: 30px;
+        box-shadow: none;
+        img {
+            max-width: 2rem;
         }
     }
 }

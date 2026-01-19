@@ -14,10 +14,15 @@ import {
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import {
-  Auth, indexedDBLocalPersistence, initializeAuth, signInWithEmailAndPassword, signInWithPopup
+  Auth, indexedDBLocalPersistence,
+  initializeAuth, signInWithEmailAndPassword,
+  signInWithPopup, GoogleAuthProvider,
+  signInWithCredential,
+  AuthCredential,
+  OAuthCredential,
+  OAuthProvider
 } from "firebase/auth";
 import { Router } from '@angular/router';
-import { GoogleAuthProvider } from "firebase/auth";
 import { DateTime, Interval } from 'luxon';
 
 @Injectable({
@@ -196,6 +201,18 @@ export class RitualService {
 
     public async loginWithGoogle(): Promise<void> {
       await signInWithPopup(this.auth, new GoogleAuthProvider()).then((result) => {
+        localStorage.setItem('userId', result.user.uid);
+        this.router.navigateByUrl('/rituals');
+      });
+    }
+
+    public async loginWithCredential(providerStr: string, idToken: string, accessToken: string): Promise<void> {
+      const provider = new OAuthProvider(providerStr);
+      const credential = provider.credential({
+        idToken,
+        accessToken
+      });
+      await signInWithCredential(this.auth, credential).then((result) => {
         localStorage.setItem('userId', result.user.uid);
         this.router.navigateByUrl('/rituals');
       });

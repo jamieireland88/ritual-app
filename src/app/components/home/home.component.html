@@ -9,7 +9,7 @@
 </form>
 
 <div class="social-buttons">
-    <div class="gsi-material-button" (click)="loginWithGoogle()">
+    <!-- <div class="gsi-material-button" (click)="loginWithGoogle()">
         <div class="gsi-material-button-state"></div>
         <div class="gsi-material-button-content-wrapper">
           <div class="gsi-material-button-icon">
@@ -24,5 +24,7 @@
           <span class="gsi-material-button-contents">Sign in</span>
           <span style="display: none;">Sign in with Google</span>
         </div>
-    </div>
+    </div> -->
+    <button (click)="loginWithApple()" class="apple-button"><img src="apple.png"/></button>
+    <button (click)="loginWithGoogle()" class="google-button"><img src="google.png"/></button>
 </div>
