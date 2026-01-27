@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
         mode: 'online'
       },
       apple: {
-        clientId: 'com.owlsnake-studios.ritual'
+        clientId: 'com.owlsnake-studios.ritual-services'
       }
     });
 

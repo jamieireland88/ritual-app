@@ -13,6 +13,11 @@ const config: CapacitorConfig = {
         twitter: false
       }
     }
+  },
+  server: {
+    hostname: 'ritual.co.uk',
+    androidScheme: 'https',
+    iosScheme: 'https'
   }
 };
 
