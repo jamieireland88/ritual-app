@@ -1,18 +1,21 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RitualService } from '../../services/ritual.service';
 import { HeaderService } from '../../services/header.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SocialLogin } from '@capgo/capacitor-social-login';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-home',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, LoaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
   private readonly ritualService = inject(RitualService);
   private readonly headerService = inject(HeaderService);
+
+  protected isLoading = signal(true);
 
   constructor() {
     this.headerService.resetData();
@@ -41,14 +44,17 @@ export class HomeComponent implements OnInit {
       const code = await SocialLogin.getAuthorizationCode({
         provider: 'google',
       });
-      this.ritualService.loginWithCredential('google.com', code.jwt || '', code.accessToken || '')
+      this.ritualService.loginWithCredential('google.com', code.jwt || '', code.accessToken || '');
+      return;
     }
     if (appleStatus.isLoggedIn) {
       const code = await SocialLogin.getAuthorizationCode({
         provider: 'apple',
       });
-      this.ritualService.loginWithCredential('apple.com', code.jwt || '', code.accessToken || '')
+      this.ritualService.loginWithCredential('apple.com', code.jwt || '', code.accessToken || '');
+      return;
     }
+    this.isLoading.set(false);
   }
 
   public async loginWithGoogle(): Promise<void> {

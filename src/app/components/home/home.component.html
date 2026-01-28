@@ -6,3 +6,7 @@
     <button (click)="loginWithApple()" class="apple-button"><img src="apple.png"/></button>
     <button (click)="loginWithGoogle()" class="google-button"><img src="google.png"/></button>
 </div>
+
+@if (isLoading()) {
+  <app-loader></app-loader>
+}
