@@ -38,6 +38,7 @@ export class RitualListComponent {
     this.loadData();
     this.headerService.setData({
       title: this.translateService.instant('list.my-rituals'),
+      showMenuButton: true,
       smallTitle: true,
     })
   }

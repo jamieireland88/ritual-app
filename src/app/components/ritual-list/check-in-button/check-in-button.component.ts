@@ -44,7 +44,7 @@ export class CheckInButtonComponent implements OnInit, OnDestroy {
     this.headerService.setData({
       title: this.ritual.name,
       showBackButton: true,
-      showMenuButton: true,
+      showEditButton: true,
       ritual: this.ritual,
     });
 

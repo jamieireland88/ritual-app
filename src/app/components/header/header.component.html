@@ -7,7 +7,10 @@
     {{headerData().title || 'Ritual'}}
 </h1>
 <div id="appMenu">
+    @if (headerData().showEditButton) {
+        <i class="icon-pencil" (click)="openEdit()"></i>
+    }
     @if (headerData().showMenuButton) {
-    <i class="icon-pencil" (click)="openMenu()"></i>
+        <i class="icon-menu" (click)="openMenu()"></i>
     }
 </div>

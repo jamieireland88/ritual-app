@@ -42,6 +42,7 @@ body {
         z-index: -1;
         max-height: 100%;
         opacity: 0.1;
+        animation: scroll 30s infinite;
     }
     #main {
         display: flex;

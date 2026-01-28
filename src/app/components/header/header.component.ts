@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { HeaderService } from '../../services/header.service';
 import { Dialog } from '@angular/cdk/dialog';
-import { ActionSheetComponent } from '../action-sheet/action-sheet.component'
+import { ActionSheetComponent } from '../action-sheet/action-sheet.component';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-header',
@@ -25,9 +26,13 @@ export class HeaderComponent {
     this.router.navigate(['rituals']);
   }
 
-  protected openMenu(): void {
+  protected openEdit(): void {
     this.dialog.open(ActionSheetComponent, {
       data: { ritual: this.headerData().ritual }
     });
+  }
+
+  protected openMenu(): void {
+    this.dialog.open(MenuComponent);
   }
 }

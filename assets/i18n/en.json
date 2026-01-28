@@ -22,5 +22,9 @@
     "stats.longest": "Longest",
     "stats.current": "Current",
     "stats.completion": "Completion",
-    "stats.total": "Total"
+    "stats.total": "Total",
+    "menu.delete-account": "Delete account",
+    "menu.logout": "Logout",
+    "menu.developer": "Developed by Jamie Ireland",
+    "menu.version": "Version {{ version }}"
 }

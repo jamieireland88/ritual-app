@@ -6,6 +6,7 @@ export interface HeaderData {
   title?: string;
   showBackButton?: boolean;
   showMenuButton?: boolean;
+  showEditButton?: boolean;
   smallTitle?: boolean;
   ritual?: Ritual
 }

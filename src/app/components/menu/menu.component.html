@@ -1,0 +1,22 @@
+<div class="menu">
+    <i class="icon-cross menu__close" (click)="close()"></i>
+    <div class="menu__information">
+        <img src="icon-foreground.png" alt="Ritual"/>
+        <div class="menu__information--text">
+            <span class="menu__information--app-name">Ritual</span>
+            <a href="https://www.linkedin.com/in/jamie-ireland/" target="_blank" class="menu__information--dev-name">
+                {{ 'menu.developer' | translate }}
+            </a>
+            <span class="menu__information--version">{{ 'menu.version' | translate: { version: version() } }}</span>
+        </div>
+    </div>
+
+    <div class="menu__item delete">
+        <i class="icon-bin"></i>
+        <span>{{ 'menu.delete-account' | translate }}</span>
+    </div>
+    <div class="menu__item" (click)="logout()">
+        <i class="icon-exit"></i>
+        <span>{{ 'menu.logout' | translate }}</span>
+    </div>
+</div>>

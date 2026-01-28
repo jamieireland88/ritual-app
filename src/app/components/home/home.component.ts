@@ -1,6 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RitualService } from '../../services/ritual.service';
 import { HeaderService } from '../../services/header.service';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -8,22 +6,15 @@ import { SocialLogin } from '@capgo/capacitor-social-login';
 
 @Component({
   selector: 'app-home',
-  imports: [ReactiveFormsModule, TranslatePipe],
+  imports: [TranslatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  public loginForm: FormGroup;
-
   private readonly ritualService = inject(RitualService);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly headerService = inject(HeaderService);
 
   constructor() {
-    this.loginForm = this.formBuilder.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
-    });
     this.headerService.resetData();
   }
 
@@ -40,22 +31,24 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    const status = await SocialLogin.isLoggedIn({
+    const googleStatus = await SocialLogin.isLoggedIn({
       provider: 'google'
     });
-    if (status.isLoggedIn) {
+    const appleStatus = await SocialLogin.isLoggedIn({
+      provider: 'google'
+    });
+    if (googleStatus.isLoggedIn) {
       const code = await SocialLogin.getAuthorizationCode({
         provider: 'google',
       });
       this.ritualService.loginWithCredential('google.com', code.jwt || '', code.accessToken || '')
     }
-  }
-
-  public async login(): Promise<void> {
-    this.ritualService.login(
-      this.loginForm.value.email,
-      this.loginForm.value.password,
-    );
+    if (appleStatus.isLoggedIn) {
+      const code = await SocialLogin.getAuthorizationCode({
+        provider: 'apple',
+      });
+      this.ritualService.loginWithCredential('apple.com', code.jwt || '', code.accessToken || '')
+    }
   }
 
   public async loginWithGoogle(): Promise<void> {
@@ -66,7 +59,6 @@ export class HomeComponent implements OnInit {
       },
     }) as any;
     this.ritualService.loginWithCredential('google.com', res.result.idToken, res.result.accessToken.token)
-    console.log(res);
   }
 
   public async loginWithApple(): Promise<void> {
@@ -76,7 +68,6 @@ export class HomeComponent implements OnInit {
         scopes: ['email', 'name'],
       },
     }) as any;
-    this.ritualService.loginWithCredential('apple.com', res.result.idToken, res.result.accessToken.token)
-    console.log(res);
+    this.ritualService.loginWithCredential('apple.com', res.result.idToken, res.result.accessToken.token);
   }
 }

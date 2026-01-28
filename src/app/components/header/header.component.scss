@@ -28,15 +28,7 @@
 
 #appMenu {
     justify-self: flex-end;
-    .menu-icon {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        &>div {
-            width: 30px;
-            height: 5px;
-            border-radius: 20px;
-            background: white;
-        }
+    i {
+        font-size: large;
     }
 }
