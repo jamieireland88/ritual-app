@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     await SocialLogin.initialize({
       google: {
         webClientId: '264927648797-l56u7ut9ihdvj7qkdr4qur2i84avgibl.apps.googleusercontent.com',
-        iOSClientId: '264927648797-25rqaobvmfknf43ggkudueiv2h9lo2pi.apps.googleusercontent.com',
+        iOSClientId: '264927648797-1d87q07j8sbkdsameuh1fn0uj7s6jbg7.apps.googleusercontent.com',
         mode: 'online'
       },
       apple: {
