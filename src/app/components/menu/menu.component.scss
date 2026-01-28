@@ -10,6 +10,8 @@
     background: var(--color-white);
     color: var(--color-dark);
     padding: 1rem;
+    padding-top: calc(env(safe-area-inset-top, 0) + 1rem);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0) + 1rem);
     gap: 1rem;
 
     img {
