@@ -43,7 +43,8 @@ body {
         z-index: -1;
         max-height: 100%;
         opacity: 0.1;
-        animation: scroll 30s infinite;
+        animation: breathe 60s infinite;
+        animation-timing-function: ease-in-out;
     }
     #main {
         display: flex;
