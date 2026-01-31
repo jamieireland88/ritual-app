@@ -68,12 +68,19 @@ export class HomeComponent implements OnInit {
   }
 
   public async loginWithApple(): Promise<void> {
-    const res = await SocialLogin.login({
-      provider: 'apple',
-      options: {
-        scopes: ['email', 'name'],
-      },
-    }) as any;
-    this.ritualService.loginWithCredential('apple.com', res.result.idToken, res.result.accessToken.token);
+    let res;
+    try {
+      res = await SocialLogin.login({
+        provider: 'apple',
+        options: {
+          scopes: ['email', 'name'],
+        },
+      }) as any;
+    } catch(err) {
+      alert(err);
+    } finally {
+      alert(res);
+      this.ritualService.loginWithCredential('apple.com', res.result.idToken, res.result.accessToken.token);
+    }
   }
 }
