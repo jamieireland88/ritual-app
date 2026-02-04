@@ -29,13 +29,8 @@ export class HomeComponent implements OnInit {
         mode: 'online'
       },
       apple: {
-<<<<<<< HEAD
         clientId: 'com.owlsnake-studios.ritual',
         // redirectUrl: 'https://ritual-95fff.firebaseapp.com/__/auth/handler'
-=======
-        clientId: 'com.owlsnake-studios.ritual-services',
-        redirectUrl: window.location.href
->>>>>>> d27f295 (feat: fixed login persistence)
       }
     });
   }
