@@ -19,7 +19,7 @@
         }
 
         &:last-child {
-            color: red;
+            color: var(--color-red);
         }
     }
 }

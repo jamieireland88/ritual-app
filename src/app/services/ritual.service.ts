@@ -146,7 +146,6 @@ export class RitualService {
     }
 
     public async createCheckIn(ritualId: string): Promise<DocumentReference> {
-      // updateDoc(doc(this.db, "User", this.userId!, "rituals", ritualId), { lastCheckin: new Date().toISOString() });
       await runTransaction(this.db, async (transaction) => {
         const docRef = doc(this.db, "User", this.userId!, "rituals", ritualId);
         const document = await transaction.get(docRef);
@@ -159,8 +158,8 @@ export class RitualService {
         const lastCheckin = document.data()['lastCheckin'];
         if (!lastCheckin || this.lastCheckinMatchesDate(lastCheckin.toDate(), this.yesterday)) {
           currentStreak = (document.data()['currentStreak'] || 0) + 1;
+          longestStreak = Math.max(longestStreak + 1, currentStreak);
         }
-        longestStreak = Math.max(longestStreak + 1, currentStreak);
         const totalComplete = (document.data()['totalComplete'] || 0) + 1;
         transaction.update(docRef, { currentStreak, longestStreak, totalComplete, lastCheckin: new Date() });
       });

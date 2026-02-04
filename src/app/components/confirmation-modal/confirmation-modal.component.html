@@ -1,0 +1,15 @@
+<div class="confirmation-modal">
+    <div class="confirmation-modal__header">
+        <div class="confirmation-modal__icon-wrapper">
+            <i class="icon-bin"></i>
+        </div>
+        <div class="confirmation-modal__content">
+            <span class="confirmation-modal__title">{{ data.title }}</span>
+            <span class="confirmation-modal__message">{{ data.message }}</span>
+        </div>
+    </div>
+    <div class="confirmation-modal__buttons">
+        <button class="confirmation-modal__buttons--cancel" (click)="cancel()">{{ 'common.cancel' | translate }}</button>
+        <button class="confirmation-modal__buttons--confirm" (click)="confirm()">{{ 'common.delete' | translate }}</button>
+    </div>
+</div>

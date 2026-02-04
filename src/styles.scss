@@ -7,7 +7,8 @@ $colors: (
     'light': #B4C2BB,
     'dark': #313532,
     'white': #fff,
-    'gold': #BF953F
+    'gold': #BF953F,
+    'red': #ED2B21
 );
 
 @each $key, $color in $colors {

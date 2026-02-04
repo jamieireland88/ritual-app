@@ -16,6 +16,9 @@ import { gsap } from 'gsap';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { RitualService } from '../../../services/ritual.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Dialog } from '@angular/cdk/dialog';
+import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -47,9 +50,7 @@ export class RitualComponent {
 
   private readonly ritualService = inject(RitualService);
 
-  constructor() {
-
-  }
+  private readonly dialog = inject(Dialog);
 
   public view(): void {
     this.router.navigate(['/rituals/', this.ritual.id, encodeURI(this.ritual.name)]);
@@ -74,6 +75,7 @@ export class RitualComponent {
   }
 
   public onSwipeRight(): void {
+    if (this.ritual.actioned) return;
     gsap.timeline()
     .to(this.ritualEle.nativeElement, {transform: 'translateX(20px)', duration: 0.05})
     .to(this.ritualEle.nativeElement, {transform: 'translateX(0px)', duration: 0.05})
@@ -81,8 +83,23 @@ export class RitualComponent {
   }
 
   public onSwipeLeft(): void {
-    gsap.to(this.ritualEle.nativeElement, {transform: 'translateX(-100%)', duration: 0.1});
-    this.ritualService.deleteRitual(this.ritual.id).finally(() => this.ritualDeleted.emit());
-    Haptics.impact({ style: ImpactStyle.Heavy });
+    gsap.timeline()
+    .to(this.ritualEle.nativeElement, {transform: 'translateX(20px)', duration: 0.05})
+    .to(this.ritualEle.nativeElement, {transform: 'translateX(0px)', duration: 0.05})
+    .play().then(() => {
+      Haptics.impact({ style: ImpactStyle.Heavy });
+    });
+    const modal = this.dialog.open(ConfirmationModalComponent, {
+      data: {
+        title: this.translateService.instant('confirmation-modal.delete-ritual.title'),
+        message: this.translateService.instant('confirmation-modal.delete-ritual.message'),
+      }
+    });
+    modal.closed.pipe(take(1)).subscribe((action) => {
+      if (action) {
+        this.ritualService.deleteRitual(this.ritual.id).finally(() => this.ritualDeleted.emit());
+        Haptics.impact({ style: ImpactStyle.Heavy });
+      }
+    });
   }
 }
