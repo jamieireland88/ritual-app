@@ -22,7 +22,8 @@ import {
   OAuthCredential,
   OAuthProvider,
   onAuthStateChanged,
-  signOut
+  signOut,
+  deleteUser
 } from "firebase/auth";
 import { Router } from '@angular/router';
 import { DateTime, Interval } from 'luxon';
@@ -198,6 +199,14 @@ export class RitualService {
 
     public deleteRitual(ritualId: string): Promise<void> {
       return deleteDoc(doc(this.db, "User", this.userId!, "rituals", ritualId))
+    }
+
+    public async deleteUserAccount(): Promise<boolean> {
+      let user = this.auth.currentUser;
+      if (!user) {
+        return Promise.resolve(false);
+      }
+      return deleteUser(user).then(() => true).catch(() => false);
     }
 
     public async logout(): Promise<void> {

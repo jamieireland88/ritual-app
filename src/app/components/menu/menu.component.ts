@@ -27,4 +27,12 @@ export class MenuComponent {
     this.ritualService.logout();
     this.close();
   }
+
+  protected async deleteUserAccount(): Promise<void> {
+    const result = await this.ritualService.deleteUserAccount();
+    if (result) {
+      this.router.navigateByUrl('');
+      this.close();
+    }
+  }
 }
