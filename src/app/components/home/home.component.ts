@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   private readonly ritualService = inject(RitualService);
   private readonly headerService = inject(HeaderService);
 
-  protected isLoading = signal(true);
+  protected isLoading = signal(false);
 
   constructor() {
     this.headerService.resetData();
@@ -29,32 +29,15 @@ export class HomeComponent implements OnInit {
         mode: 'online'
       },
       apple: {
+<<<<<<< HEAD
         clientId: 'com.owlsnake-studios.ritual',
         // redirectUrl: 'https://ritual-95fff.firebaseapp.com/__/auth/handler'
+=======
+        clientId: 'com.owlsnake-studios.ritual-services',
+        redirectUrl: window.location.href
+>>>>>>> d27f295 (feat: fixed login persistence)
       }
     });
-
-    const googleStatus = await SocialLogin.isLoggedIn({
-      provider: 'google'
-    });
-    const appleStatus = await SocialLogin.isLoggedIn({
-      provider: 'google'
-    });
-    if (googleStatus.isLoggedIn) {
-      const code = await SocialLogin.getAuthorizationCode({
-        provider: 'google',
-      });
-      this.ritualService.loginWithCredential('google.com', code.jwt || '', code.accessToken || '');
-      return;
-    }
-    if (appleStatus.isLoggedIn) {
-      const code = await SocialLogin.getAuthorizationCode({
-        provider: 'apple',
-      });
-      this.ritualService.loginWithCredential('apple.com', code.jwt || '', code.accessToken || '');
-      return;
-    }
-    this.isLoading.set(false);
   }
 
   public async loginWithGoogle(): Promise<void> {
@@ -68,19 +51,12 @@ export class HomeComponent implements OnInit {
   }
 
   public async loginWithApple(): Promise<void> {
-    let res;
-    try {
-      res = await SocialLogin.login({
-        provider: 'apple',
-        options: {
-          scopes: ['email', 'name'],
-        },
-      }) as any;
-    } catch(err) {
-      alert(err);
-    } finally {
-      alert(res);
-      this.ritualService.loginWithCredential('apple.com', res.result.idToken, res.result.accessToken.token);
-    }
+    const res = await SocialLogin.login({
+      provider: 'apple',
+      options: {
+        scopes: ['email', 'name'],
+      },
+    }) as any;
+    this.ritualService.loginWithCredential('apple.com', res.result.idToken, res.result.accessToken.token);
   }
 }

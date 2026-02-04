@@ -4,6 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SocialLogin } from '@capgo/capacitor-social-login';
 import { SocketAddress } from 'node:net';
 import { Router } from '@angular/router';
+import { RitualService } from '../../services/ritual.service';
 
 @Component({
   selector: 'app-menu',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 export class MenuComponent {
   protected dialogRef = inject(DialogRef);
   protected router = inject(Router);
+  protected ritualService = inject(RitualService);
 
   protected version = signal('1.0.0');
 
@@ -22,14 +24,7 @@ export class MenuComponent {
   }
 
   protected async logout(): Promise<void> {
-    const appleStatus = await SocialLogin.isLoggedIn({ provider: 'apple' });
-    let provider: 'google' | 'apple' = 'google';
-    if (appleStatus.isLoggedIn) {
-      provider = 'apple';
-    }
-    await SocialLogin.logout({ provider }).finally(() => {
-      this.router.navigateByUrl('');
-      this.close();
-    });
+    this.ritualService.logout();
+    this.close();
   }
 }

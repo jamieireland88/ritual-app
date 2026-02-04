@@ -20,7 +20,9 @@ import {
   signInWithCredential,
   AuthCredential,
   OAuthCredential,
-  OAuthProvider
+  OAuthProvider,
+  onAuthStateChanged,
+  signOut
 } from "firebase/auth";
 import { Router } from '@angular/router';
 import { DateTime, Interval } from 'luxon';
@@ -43,6 +45,12 @@ export class RitualService {
       private readonly router: Router,
     ){
       this.initFirebase();
+      onAuthStateChanged(this.auth, (user) => {
+        if (user) {
+          localStorage.setItem('userId', user.uid);
+          this.router.navigateByUrl('/rituals');
+        }
+      });
     }
 
     public async initFirebase(): Promise<void> {
@@ -192,18 +200,14 @@ export class RitualService {
       return deleteDoc(doc(this.db, "User", this.userId!, "rituals", ritualId))
     }
 
-    public async login(username: string, password: string): Promise<void> {
-      await signInWithEmailAndPassword(this.auth, username, password).then((creds) => {
-        localStorage.setItem('userId', creds.user.uid);
-        this.router.navigateByUrl('/rituals');
-      });
+    public async logout(): Promise<void> {
+      await signOut(this.auth);
+      localStorage.removeItem('userId');
+      this.router.navigateByUrl('');
     }
 
     public async loginWithGoogle(): Promise<void> {
-      await signInWithPopup(this.auth, new GoogleAuthProvider()).then((result) => {
-        localStorage.setItem('userId', result.user.uid);
-        this.router.navigateByUrl('/rituals');
-      });
+      await signInWithPopup(this.auth, new GoogleAuthProvider());
     }
 
     public async loginWithCredential(providerStr: string, idToken: string, accessToken: string): Promise<void> {
@@ -212,10 +216,7 @@ export class RitualService {
         idToken,
         accessToken
       });
-      await signInWithCredential(this.auth, credential).then((result) => {
-        localStorage.setItem('userId', result.user.uid);
-        this.router.navigateByUrl('/rituals');
-      });
+      await signInWithCredential(this.auth, credential);
     }
 
     private get yesterday(): Date {
