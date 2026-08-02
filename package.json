@@ -24,6 +24,7 @@
     "@capacitor/core": "^8.0.0",
     "@capacitor/haptics": "^8.0.0",
     "@capacitor/ios": "^8.0.0",
+    "@capgo/capacitor-persistent-account": "^8.0.20",
     "@capgo/capacitor-social-login": "^8.2.16",
     "@firebase/auth": "^1.8.1",
     "@firebase/firestore": "^1.14.1",
@@ -35,6 +36,7 @@
     "luxon": "^3.7.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "uuid": "^13.0.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

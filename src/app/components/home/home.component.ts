@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { RitualService } from '../../services/ritual.service';
 import { HeaderService } from '../../services/header.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SocialLogin } from '@capgo/capacitor-social-login';
 import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
@@ -11,47 +10,13 @@ import { LoaderComponent } from '../loader/loader.component';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit {
-  private readonly ritualService = inject(RitualService);
+export class HomeComponent {
   private readonly headerService = inject(HeaderService);
+  private readonly ritualService = inject(RitualService);
 
   protected isLoading = signal(false);
 
   constructor() {
     this.headerService.resetData();
-  }
-
-  async ngOnInit(): Promise<void> {
-    await SocialLogin.initialize({
-      google: {
-        webClientId: '264927648797-l56u7ut9ihdvj7qkdr4qur2i84avgibl.apps.googleusercontent.com',
-        iOSClientId: '264927648797-1d87q07j8sbkdsameuh1fn0uj7s6jbg7.apps.googleusercontent.com',
-        mode: 'online'
-      },
-      apple: {
-        clientId: 'com.owlsnake-studios.ritual',
-        // redirectUrl: 'https://ritual-95fff.firebaseapp.com/__/auth/handler'
-      }
-    });
-  }
-
-  public async loginWithGoogle(): Promise<void> {
-    const res = await SocialLogin.login({
-      provider: 'google',
-      options: {
-        scopes: ['email', 'profile'],
-      },
-    }) as any;
-    this.ritualService.loginWithCredential('google.com', res.result.idToken, res.result.accessToken.token)
-  }
-
-  public async loginWithApple(): Promise<void> {
-    const res = await SocialLogin.login({
-      provider: 'apple',
-      options: {
-        scopes: ['email', 'name'],
-      },
-    }) as any;
-    this.ritualService.loginWithCredential('apple.com', res.result.idToken, res.result.accessToken.token);
   }
 }

@@ -3,9 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
     {
         path: '',
-        loadComponent: () => import(
-            './components/home/home.component')
-        .then(mod => mod.HomeComponent)
+        pathMatch: 'full',
+        redirectTo: 'rituals'
     },
     {
         path: 'rituals',
@@ -19,4 +18,8 @@ export const routes: Routes = [
             './components/ritual-list/check-in-button/check-in-button.component')
         .then(mod => mod.CheckInButtonComponent)
     },
+    {
+        path: '**',
+        redirectTo: '',
+    }
 ];
