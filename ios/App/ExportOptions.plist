@@ -18,6 +18,6 @@
 		<string>Ritual</string>
     </dict>
 	<key>testFlightInternalTestingOnly</key>
-	<true/>
+	<false/>
 </dict>
 </plist>
